@@ -203,7 +203,7 @@ const {
       existingBookings.push(bookingRecord);
       localStorage.setItem("balance_studio_bookings", JSON.stringify(existingBookings));
     } catch {
-      // LocalStorage handling
+      void 0;
     }
 
     const feedbackBookingCodeValue = document.getElementById("feedbackBookingCodeValue");
