@@ -1,0 +1,216 @@
+---
+import RootLayout from "../../layouts/RootLayout.astro";
+import BookingSection from "../../components/BookingSection.astro";
+import { studioPracticesList } from "../../data/practices";
+---
+
+<RootLayout
+  pageTitle="Направления практик — Студия горячей йоги Balance в Одессе"
+  pageDescription="Специализированные практики горячей йоги в нагретом зале 38–40°C. Безопасное раскрытие тела, глубокая детоксикация и ментальная перезагрузка."
+  currentCanonicalPath="/practices"
+>
+  <section class="luxury-section practices-page-hero">
+    <div class="luxury-container">
+      <div class="practices-hero-intro">
+        <span class="luxury-badge">Специализация студии</span>
+        <h1 class="practices-page-title">Практики горячей йоги</h1>
+        <p class="practices-page-lead">
+          Мы сознательно не распыляем внимание на десятки разнородных направлений. Balance — это пространство бескомпромиссного мастерства в одном ключевом методе: аутентичной горячей йоге в выверенном микроклимате 38–40°C.
+        </p>
+      </div>
+
+      <div class="practices-list-column">
+        {studioPracticesList.map((practiceEntry) => (
+          <article class="luxury-card practice-entry-card">
+            <div class="practice-visual-column">
+              <img
+                src={practiceEntry.heroImage}
+                alt={practiceEntry.title}
+                width="650"
+                height="450"
+                class="practice-entry-photo"
+                loading="eager"
+              />
+              <div class="practice-climate-tag">
+                {practiceEntry.temperature} · {practiceEntry.humidity}
+              </div>
+            </div>
+
+            <div class="practice-details-column">
+              <div class="practice-meta-row">
+                <span class="practice-meta-pill">Длительность: {practiceEntry.duration}</span>
+                <span class="practice-meta-pill">{practiceEntry.intensityLevel}</span>
+              </div>
+
+              <h2 class="practice-entry-title">{practiceEntry.title}</h2>
+              <p class="practice-entry-subtitle">{practiceEntry.subtitle}</p>
+              <p class="practice-entry-description">{practiceEntry.summary}</p>
+
+              <div class="practice-benefits-group">
+                <span class="practice-benefits-label">Ключевые результаты:</span>
+                <ul class="practice-benefits-list">
+                  {practiceEntry.keyBenefits.slice(0, 3).map((benefitItem) => (
+                    <li class="practice-benefit-line">{benefitItem}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="practice-actions-row">
+                <a href={`/practices/${practiceEntry.slug}`} class="luxury-button-primary">
+                  Читать полное описание
+                </a>
+                <a href="/schedule" class="luxury-button-secondary">
+                  Смотреть в расписании
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <BookingSection sectionHeadline="Записаться на занятие горячей йогой" />
+</RootLayout>
+
+<style>
+  .practices-page-hero {
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .practices-hero-intro {
+    max-width: var(--spacing-content-reading-width);
+    margin-bottom: clamp(3rem, 5vw, 4.5rem);
+  }
+
+  .practices-page-title {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .practices-page-lead {
+    font-size: clamp(1.125rem, 1.3vw, 1.3rem);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .practices-list-column {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .practice-entry-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: clamp(1.5rem, 3.5vw, 3.5rem);
+    background-color: var(--color-background-surface);
+  }
+
+  @media (min-width: 1024px) {
+    .practice-entry-card {
+      grid-template-columns: 1fr 1.15fr;
+      gap: 4rem;
+      align-items: center;
+    }
+  }
+
+  .practice-visual-column {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .practice-entry-photo {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .practice-climate-tag {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    background-color: rgba(66, 76, 59, 0.95);
+    color: #FAF8F2;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-family-serif);
+    font-size: 1rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .practice-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .practice-meta-pill {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+    background-color: rgba(52, 44, 37, 0.05);
+    padding: 0.35rem 0.75rem;
+  }
+
+  .practice-entry-title {
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    margin-bottom: 0.5rem;
+  }
+
+  .practice-entry-subtitle {
+    font-family: var(--font-family-serif);
+    font-size: 1.25rem;
+    color: var(--color-accent-olive);
+    font-style: italic;
+    margin-bottom: 1.25rem;
+  }
+
+  .practice-entry-description {
+    line-height: 1.7;
+    margin-bottom: 1.75rem;
+  }
+
+  .practice-benefits-group {
+    margin-bottom: 2rem;
+  }
+
+  .practice-benefits-label {
+    display: block;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-primary);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .practice-benefits-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .practice-benefit-line {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .practice-benefit-line::before {
+    content: "—";
+    color: var(--color-accent-olive);
+    font-weight: 600;
+  }
+
+  .practice-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+</style>

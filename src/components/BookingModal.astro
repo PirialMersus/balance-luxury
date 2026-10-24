@@ -1,0 +1,699 @@
+---
+import { studioPracticesList } from "../data/practices";
+---
+
+<div
+  class="luxury-booking-modal-overlay"
+  id="luxuryBookingModalOverlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="bookingModalTitle"
+  aria-hidden="true"
+>
+  <div class="luxury-booking-modal-backdrop" id="bookingModalBackdrop"></div>
+
+  <div class="luxury-booking-modal-dialog">
+    <button
+      type="button"
+      class="booking-modal-close-button"
+      id="bookingModalCloseButton"
+      aria-label="Закрыть окно бронирования"
+    >
+      &times;
+    </button>
+
+    <div class="booking-modal-body-container" id="bookingModalBodyContainer">
+      <div class="booking-modal-header">
+        <span class="luxury-badge">Камерная практика</span>
+        <h2 class="booking-modal-title" id="bookingModalTitle">Запись на занятие</h2>
+        <p class="booking-modal-subtitle">
+          Забронируйте коврик в нагретом зале (38–40°C). Администратор свяжется с вами в течение 15 минут для подтверждения времени и отправки схемы проезда.
+        </p>
+      </div>
+
+      <form class="booking-modal-form" id="luxuryModalBookingForm" novalidate>
+        <div class="modal-form-grid">
+          <div class="modal-field-group">
+            <label for="modalClientNameInput" class="modal-label">Ваше имя *</label>
+            <input
+              type="text"
+              id="modalClientNameInput"
+              name="clientName"
+              placeholder="Как к вам обращаться"
+              class="modal-input"
+              required
+              minlength="2"
+            />
+            <span class="modal-validation-error" id="modalNameError">Пожалуйста, введите ваше имя (не менее 2 букв)</span>
+          </div>
+
+          <div class="modal-field-group">
+            <label for="modalClientPhoneInput" class="modal-label">Телефон для связи *</label>
+            <input
+              type="tel"
+              id="modalClientPhoneInput"
+              name="clientPhone"
+              placeholder="+380 (__) ___-__-__"
+              class="modal-input"
+              required
+              minlength="9"
+            />
+            <span class="modal-validation-error" id="modalPhoneError">Введите корректный номер телефона</span>
+          </div>
+        </div>
+
+        <div class="modal-form-grid">
+          <div class="modal-field-group">
+            <label for="modalPracticeSelect" class="modal-label">Направление *</label>
+            <select id="modalPracticeSelect" name="practiceSlug" class="modal-select">
+              {studioPracticesList.map((practiceEntry) => (
+                <option value={practiceEntry.slug}>
+                  {practiceEntry.title} ({practiceEntry.temperature})
+                </option>
+              ))}
+              <option value="private-class">Персональная практика с Марией Мироновой</option>
+              <option value="trial-class">Первое ознакомительное занятие</option>
+            </select>
+          </div>
+
+          <div class="modal-field-group">
+            <label for="modalPreferredTimeSelect" class="modal-label">Удобное время *</label>
+            <select id="modalPreferredTimeSelect" name="preferredTime" class="modal-select">
+              <option value="morning-flow">Утро (09:30 — 11:00)</option>
+              <option value="evening-detox">Вечер (18:30 / 19:00)</option>
+              <option value="weekend-intensive">Выходные (11:00 — 12:30)</option>
+              <option value="flexible">Согласовать время индивидуально</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-field-group">
+          <label for="modalClientNoteInput" class="modal-label">Комментарий или пожелания (необязательно)</label>
+          <input
+            type="text"
+            id="modalClientNoteInput"
+            name="clientNote"
+            placeholder="Опыт практики, ограничения по здоровью или желаемая дата"
+            class="modal-input"
+          />
+        </div>
+
+        <div class="modal-checkbox-row">
+          <input
+            type="checkbox"
+            id="modalPrivacyConsentCheckbox"
+            name="privacyConsent"
+            class="modal-checkbox"
+            required
+            checked
+          />
+          <label for="modalPrivacyConsentCheckbox" class="modal-checkbox-label">
+            Я согласен на обработку данных согласно <a href="/privacy" class="modal-privacy-link" target="_blank">политике конфиденциальности</a>
+          </label>
+          <span class="modal-validation-error" id="modalConsentError">Требуется согласие с политикой</span>
+        </div>
+
+        <div class="modal-service-reminders">
+          <div class="service-reminder-item">
+            <span class="reminder-icon">&bull;</span>
+            <span class="reminder-text">В стоимость включены коврик, два хлопковых полотенца и питьевая вода</span>
+          </div>
+          <div class="service-reminder-item">
+            <span class="reminder-icon">&bull;</span>
+            <span class="reminder-text">В зале поддерживается температура 38–40°C с непрерывным притоком кислорода</span>
+          </div>
+        </div>
+
+        <button type="submit" class="luxury-button-primary modal-submit-button" id="modalSubmitButton">
+          <span class="submit-button-text" id="submitButtonText">Забронировать коврик</span>
+          <span class="submit-button-spinner" id="submitButtonSpinner" aria-hidden="true"></span>
+        </button>
+      </form>
+
+      <div class="booking-success-view" id="bookingSuccessView" aria-hidden="true">
+        <div class="success-badge-icon">&check;</div>
+        <span class="luxury-badge">Бронирование оформлено</span>
+        <h3 class="success-title">Благодарим за доверие</h3>
+        <p class="success-lead" id="successLeadText">
+          Ваша заявка успешно зарегистрирована в студии Balance.
+        </p>
+
+        <div class="success-details-card">
+          <div class="success-detail-row">
+            <span class="detail-label">Номер брони:</span>
+            <span class="detail-value" id="successBookingCode">BALANCE-7491</span>
+          </div>
+          <div class="success-detail-row">
+            <span class="detail-label">Направление:</span>
+            <span class="detail-value" id="successPracticeName">Горячая йога (38–40°C)</span>
+          </div>
+          <div class="success-detail-row">
+            <span class="detail-label">Выбранное время:</span>
+            <span class="detail-value" id="successTimeSlot">Утренний класс (09:30)</span>
+          </div>
+          <div class="success-detail-row">
+            <span class="detail-label">Контакт для связи:</span>
+            <span class="detail-value" id="successContactPhone">+380 ...</span>
+          </div>
+        </div>
+
+        <p class="success-instruction">
+          Администратор студии свяжется с вами в течение 15 минут в мессенджере или по телефону для подтверждения коврика и отправит точный адрес студии со схемой проезда.
+        </p>
+
+        <button type="button" class="luxury-button-primary success-finish-button" id="successCloseButton">
+          Понятно, спасибо
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modalOverlay = document.getElementById("luxuryBookingModalOverlay");
+  const modalBackdrop = document.getElementById("bookingModalBackdrop");
+  const modalCloseButton = document.getElementById("bookingModalCloseButton");
+  const modalForm = document.getElementById("luxuryModalBookingForm") as HTMLFormElement | null;
+  const bookingSuccessView = document.getElementById("bookingSuccessView");
+  const successCloseButton = document.getElementById("successCloseButton");
+
+  const clientNameInput = document.getElementById("modalClientNameInput") as HTMLInputElement | null;
+  const clientPhoneInput = document.getElementById("modalClientPhoneInput") as HTMLInputElement | null;
+  const practiceSelect = document.getElementById("modalPracticeSelect") as HTMLSelectElement | null;
+  const preferredTimeSelect = document.getElementById("modalPreferredTimeSelect") as HTMLSelectElement | null;
+  const clientNoteInput = document.getElementById("modalClientNoteInput") as HTMLInputElement | null;
+  const privacyConsentCheckbox = document.getElementById("modalPrivacyConsentCheckbox") as HTMLInputElement | null;
+
+  const modalNameError = document.getElementById("modalNameError");
+  const modalPhoneError = document.getElementById("modalPhoneError");
+  const modalConsentError = document.getElementById("modalConsentError");
+
+  const modalSubmitButton = document.getElementById("modalSubmitButton") as HTMLButtonElement | null;
+  const submitButtonText = document.getElementById("submitButtonText");
+  const submitButtonSpinner = document.getElementById("submitButtonSpinner");
+
+  const successLeadText = document.getElementById("successLeadText");
+  const successBookingCode = document.getElementById("successBookingCode");
+  const successPracticeName = document.getElementById("successPracticeName");
+  const successTimeSlot = document.getElementById("successTimeSlot");
+  const successContactPhone = document.getElementById("successContactPhone");
+
+  function openBookingModalWithParameters(desiredPracticeSlug?: string, desiredTimeSlot?: string) {
+    if (!modalOverlay) {
+      return;
+    }
+
+    if (modalForm) {
+      modalForm.style.display = "flex";
+    }
+    if (bookingSuccessView) {
+      bookingSuccessView.classList.remove("success-view-visible");
+      bookingSuccessView.setAttribute("aria-hidden", "true");
+    }
+
+    if (desiredPracticeSlug && practiceSelect) {
+      for (let optionIndex = 0; optionIndex < practiceSelect.options.length; optionIndex += 1) {
+        if (practiceSelect.options[optionIndex].value === desiredPracticeSlug) {
+          practiceSelect.selectedIndex = optionIndex;
+          break;
+        }
+      }
+    }
+
+    if (desiredTimeSlot && preferredTimeSelect) {
+      for (let optionIndex = 0; optionIndex < preferredTimeSelect.options.length; optionIndex += 1) {
+        if (preferredTimeSelect.options[optionIndex].value.includes(desiredTimeSlot) || preferredTimeSelect.options[optionIndex].text.includes(desiredTimeSlot)) {
+          preferredTimeSelect.selectedIndex = optionIndex;
+          break;
+        }
+      }
+    }
+
+    modalOverlay.classList.add("modal-overlay-visible");
+    modalOverlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+
+    setTimeout(() => {
+      clientNameInput?.focus();
+    }, 150);
+  }
+
+  function closeBookingModal() {
+    if (!modalOverlay) {
+      return;
+    }
+    modalOverlay.classList.remove("modal-overlay-visible");
+    modalOverlay.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+
+    modalNameError?.classList.remove("error-visible");
+    modalPhoneError?.classList.remove("error-visible");
+    modalConsentError?.classList.remove("error-visible");
+  }
+
+  document.addEventListener("click", (clickEvent) => {
+    const targetElement = clickEvent.target as HTMLElement | null;
+    if (!targetElement) {
+      return;
+    }
+
+    const triggerElement = targetElement.closest("[data-open-booking-modal]") as HTMLElement | null;
+    if (triggerElement) {
+      clickEvent.preventDefault();
+      const practiceSlug = triggerElement.getAttribute("data-booking-practice") || undefined;
+      const timeSlot = triggerElement.getAttribute("data-booking-time") || undefined;
+      openBookingModalWithParameters(practiceSlug, timeSlot);
+    }
+  });
+
+  modalCloseButton?.addEventListener("click", closeBookingModal);
+  modalBackdrop?.addEventListener("click", closeBookingModal);
+  successCloseButton?.addEventListener("click", closeBookingModal);
+
+  document.addEventListener("keydown", (keyboardEvent) => {
+    if (keyboardEvent.key === "Escape" && modalOverlay?.classList.contains("modal-overlay-visible")) {
+      closeBookingModal();
+    }
+  });
+
+  modalForm?.addEventListener("submit", (formEvent) => {
+    formEvent.preventDefault();
+
+    let hasValidationError = false;
+
+    if (!clientNameInput || clientNameInput.value.trim().length < 2) {
+      modalNameError?.classList.add("error-visible");
+      hasValidationError = true;
+    } else {
+      modalNameError?.classList.remove("error-visible");
+    }
+
+    if (!clientPhoneInput || clientPhoneInput.value.trim().length < 7) {
+      modalPhoneError?.classList.add("error-visible");
+      hasValidationError = true;
+    } else {
+      modalPhoneError?.classList.remove("error-visible");
+    }
+
+    if (!privacyConsentCheckbox || !privacyConsentCheckbox.checked) {
+      modalConsentError?.classList.add("error-visible");
+      hasValidationError = true;
+    } else {
+      modalConsentError?.classList.remove("error-visible");
+    }
+
+    if (hasValidationError) {
+      return;
+    }
+
+    if (modalSubmitButton && submitButtonText && submitButtonSpinner) {
+      modalSubmitButton.disabled = true;
+      submitButtonText.textContent = "Резервирование коврика...";
+      submitButtonSpinner.classList.add("spinner-active");
+    }
+
+    const candidateName = clientNameInput ? clientNameInput.value.trim() : "";
+    const candidatePhone = clientPhoneInput ? clientPhoneInput.value.trim() : "";
+    const selectedPracticeText = practiceSelect ? practiceSelect.options[practiceSelect.selectedIndex].text : "Горячая йога (38–40°C)";
+    const selectedTimeText = preferredTimeSelect ? preferredTimeSelect.options[preferredTimeSelect.selectedIndex].text : "Утро";
+    const clientNote = clientNoteInput ? clientNoteInput.value.trim() : "";
+
+    const bookingRegistrationCode = `BALANCE-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    const bookingRecord = {
+      code: bookingRegistrationCode,
+      createdAt: new Date().toISOString(),
+      clientName: candidateName,
+      clientPhone: candidatePhone,
+      practice: selectedPracticeText,
+      timeSlot: selectedTimeText,
+      note: clientNote,
+      status: "pending_confirmation"
+    };
+
+    try {
+      const existingBookings = JSON.parse(localStorage.getItem("balance_studio_bookings") || "[]");
+      existingBookings.push(bookingRecord);
+      localStorage.setItem("balance_studio_bookings", JSON.stringify(existingBookings));
+    } catch {
+      // LocalStorage access handling
+    }
+
+    setTimeout(() => {
+      if (modalSubmitButton && submitButtonText && submitButtonSpinner) {
+        modalSubmitButton.disabled = false;
+        submitButtonText.textContent = "Забронировать коврик";
+        submitButtonSpinner.classList.remove("spinner-active");
+      }
+
+      if (modalForm) {
+        modalForm.style.display = "none";
+        modalForm.reset();
+      }
+
+      if (successBookingCode) {
+        successBookingCode.textContent = bookingRegistrationCode;
+      }
+      if (successPracticeName) {
+        successPracticeName.textContent = selectedPracticeText;
+      }
+      if (successTimeSlot) {
+        successTimeSlot.textContent = selectedTimeText;
+      }
+      if (successContactPhone) {
+        successContactPhone.textContent = candidatePhone;
+      }
+      if (successLeadText) {
+        successLeadText.textContent = `${candidateName}, ваш коврик успешно зарезервирован!`;
+      }
+
+      if (bookingSuccessView) {
+        bookingSuccessView.classList.add("success-view-visible");
+        bookingSuccessView.setAttribute("aria-hidden", "false");
+      }
+    }, 600);
+  });
+</script>
+
+<style>
+  .luxury-booking-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .modal-overlay-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .luxury-booking-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(52, 44, 37, 0.65);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .luxury-booking-modal-dialog {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 680px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background-color: #FAF8F2;
+    border: 1px solid var(--color-border-subtle);
+    box-shadow: 0 30px 60px rgba(52, 44, 37, 0.25);
+    padding: clamp(2rem, 5vw, 3.5rem);
+    transform: translateY(24px) scale(0.98);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    scrollbar-width: thin;
+  }
+
+  .modal-overlay-visible .luxury-booking-modal-dialog {
+    transform: translateY(0) scale(1);
+  }
+
+  .booking-modal-close-button {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+  }
+
+  .booking-modal-close-button:hover {
+    color: var(--color-accent-olive);
+  }
+
+  .booking-modal-header {
+    margin-bottom: 2rem;
+  }
+
+  .booking-modal-title {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+  }
+
+  .booking-modal-subtitle {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .booking-modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .modal-form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .modal-form-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .modal-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .modal-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  .modal-input,
+  .modal-select {
+    width: 100%;
+    padding: 0.95rem 1.15rem;
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border-subtle);
+    color: var(--color-text-primary);
+    font-size: 0.9375rem;
+    border-radius: 0;
+    transition: border-color var(--transition-smooth-duration) var(--transition-smooth-timing);
+  }
+
+  .modal-input:focus,
+  .modal-select:focus {
+    outline: none;
+    border-color: var(--color-accent-olive);
+  }
+
+  .modal-validation-error {
+    display: none;
+    font-size: 0.75rem;
+    color: #A33A3A;
+  }
+
+  .error-visible {
+    display: block;
+  }
+
+  .modal-checkbox-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 0.5rem;
+  }
+
+  .modal-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-accent-olive);
+    cursor: pointer;
+  }
+
+  .modal-checkbox-label {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+
+  .modal-privacy-link {
+    color: var(--color-accent-olive);
+    text-decoration: underline;
+  }
+
+  .modal-service-reminders {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem;
+    background-color: rgba(66, 76, 59, 0.05);
+    border: 1px solid var(--color-border-subtle);
+    margin-top: 0.5rem;
+  }
+
+  .service-reminder-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .reminder-icon {
+    color: var(--color-warm-amber);
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .reminder-text {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .modal-submit-button {
+    width: 100%;
+    margin-top: 0.75rem;
+    padding: 1.25rem;
+    position: relative;
+  }
+
+  .submit-button-spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(250, 248, 242, 0.3);
+    border-top-color: #FAF8F2;
+    border-radius: 50%;
+    animation: spinnerRotation 0.8s linear infinite;
+    margin-left: 0.5rem;
+  }
+
+  .spinner-active {
+    display: inline-block;
+  }
+
+  @keyframes spinnerRotation {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .booking-success-view {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+
+  .success-view-visible {
+    display: flex;
+  }
+
+  .success-badge-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: var(--color-accent-olive);
+    color: #FAF8F2;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .success-title {
+    font-size: 2.25rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .success-lead {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    max-width: 480px;
+  }
+
+  .success-details-card {
+    width: 100%;
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border-subtle);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+
+  .success-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9375rem;
+    border-bottom: 1px solid rgba(52, 44, 37, 0.08);
+    padding-bottom: 0.75rem;
+  }
+
+  .success-detail-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .detail-label {
+    color: var(--color-text-secondary);
+  }
+
+  .detail-value {
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .success-instruction {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 520px;
+  }
+
+  .success-finish-button {
+    width: 100%;
+    max-width: 320px;
+  }
+</style>

@@ -1,0 +1,654 @@
+---
+import RootLayout from "../layouts/RootLayout.astro";
+import BookingSection from "../components/BookingSection.astro";
+import FaqAccordion from "../components/FaqAccordion.astro";
+import ScheduleTable from "../components/ScheduleTable.astro";
+import { studioPracticesList } from "../data/practices";
+import { studioTeachersList } from "../data/teachers";
+
+const featuredPractice = studioPracticesList[0];
+const leadTeacher = studioTeachersList[0];
+---
+
+<RootLayout
+  pageTitle="Balance — Студия горячей йоги в Одессе | Quiet Luxury"
+  pageDescription="Единственная специализированная студия горячей йоги в Одессе. Глубокая практика в климате 38–40°C, авторский подход Марии Мироновой и камерная атмосфера спокойствия."
+  currentCanonicalPath="/"
+>
+  <section class="luxury-hero-section">
+    <div class="luxury-container hero-container-grid">
+      <div class="hero-text-content-column">
+        <span class="luxury-badge">Одесса · Hot Yoga Studio</span>
+        <h1 class="hero-main-title">
+          Горячая йога <br />
+          <span class="hero-title-accent">в атмосфере тишины</span>
+        </h1>
+        <p class="hero-sub-title">
+          Жарко. Влажно. Местами очень непросто. <br />
+          Но какое же после этого состояние…
+        </p>
+        <div class="hero-actions-row">
+          <button type="button" class="luxury-button-primary" data-open-booking-modal>
+            Записаться на практику
+          </button>
+          <a href="/schedule" class="luxury-button-secondary">
+            Смотреть расписание
+          </a>
+        </div>
+        <div class="hero-stats-row">
+          <div class="hero-stat-item">
+            <span class="hero-stat-value">38–40°C</span>
+            <span class="hero-stat-label">Климат-контроль</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-value">12 мест</span>
+            <span class="hero-stat-label">Камерный зал</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-value">100%</span>
+            <span class="hero-stat-label">Свежий приток</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-image-visual-column">
+        <div class="hero-image-frame">
+          <img
+            src="/images/hero-bg.webp"
+            alt="Студия горячей йоги Balance в Одессе"
+            width="800"
+            height="1000"
+            class="hero-primary-photo"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <div class="hero-floating-badge">
+            <span class="floating-badge-city">Одесса</span>
+            <span class="floating-badge-text">Премиальное пространство практик</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="luxury-section-divider" />
+
+  <section class="luxury-section philosophy-section">
+    <div class="luxury-container philosophy-grid">
+      <div class="philosophy-title-column">
+        <span class="luxury-badge">Ощущение и смысл</span>
+        <h2 class="philosophy-heading">
+          Место, где рождается особое состояние
+        </h2>
+      </div>
+      <div class="philosophy-text-column">
+        <p class="philosophy-lead-paragraph">
+          Balance — это не фитнес-клуб с плотным потоком людей. Это уединённая городская лаборатория глубокого восстановления, созданная для тех, кто ценит честную работу с собственным телом.
+        </p>
+        <p class="philosophy-secondary-paragraph">
+          Горячая йога снимает необходимость анализировать. В нагретом воздухе внимание естественным образом возвращается к дыханию, точке опоры и текущему моменту. Мы рекомендуем начинать с 2–3 занятий в неделю: регулярность открывает ту самую лёгкость, ради которой всё затевалось.
+        </p>
+        <div class="philosophy-link-wrapper">
+          <a href="/studio" class="luxury-text-link">
+            Подробнее о философии пространства &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="luxury-section practices-preview-section">
+    <div class="luxury-container">
+      <div class="section-headline-wrapper">
+        <span class="luxury-badge">Главное направление</span>
+        <h2 class="section-title">Практика в нагретом зале</h2>
+        <p class="section-subtitle">
+          Единственная специализированная студия горячей йоги в Одессе с профессиональным микроклиматом.
+        </p>
+      </div>
+
+      <div class="featured-practice-card-grid">
+        <div class="practice-card-photo-wrapper">
+          <img
+            src={featuredPractice.cardImage}
+            alt={featuredPractice.title}
+            width="700"
+            height="500"
+            class="practice-card-photo"
+            loading="lazy"
+          />
+          <div class="practice-temperature-tag">
+            {featuredPractice.temperature}
+          </div>
+        </div>
+
+        <div class="practice-card-content-wrapper">
+          <div class="practice-meta-tags">
+            <span class="practice-meta-pill">Длительность: {featuredPractice.duration}</span>
+            <span class="practice-meta-pill">Влажность: {featuredPractice.humidity}</span>
+          </div>
+
+          <h3 class="featured-practice-name">{featuredPractice.title}</h3>
+          <p class="featured-practice-desc">{featuredPractice.summary}</p>
+
+          <ul class="practice-benefits-checklist">
+            {featuredPractice.keyBenefits.slice(0, 4).map((benefitItem) => (
+              <li class="practice-benefit-bullet">{benefitItem}</li>
+            ))}
+          </ul>
+
+          <div class="practice-card-buttons-row">
+            <a href={`/practices/${featuredPractice.slug}`} class="luxury-button-primary">
+              Узнать больше о направлении
+            </a>
+            <a href="/schedule" class="luxury-button-secondary">
+              Расписание занятий
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="luxury-section atmosphere-showcase-section">
+    <div class="luxury-container">
+      <div class="atmosphere-layout-grid">
+        <div class="atmosphere-content-box">
+          <span class="luxury-badge">Студия</span>
+          <h2 class="atmosphere-heading">Пространство осознанной тишины</h2>
+          <p class="atmosphere-text">
+            Интерьер Balance задуман так, чтобы ничто не отвлекало от внутренней тишины. Натуральные текстуры, тёплый рассеянный свет, отсутствие визуального шума и чистый воздух с непрерывной фильтрацией.
+          </p>
+          <div class="atmosphere-features-list">
+            <div class="atmosphere-feature-card">
+              <span class="atmosphere-feature-title">Климатическая станция</span>
+              <p class="atmosphere-feature-desc">Постоянный подогрев зала инфракрасными панелями и точный контроль влажности.</p>
+            </div>
+            <div class="atmosphere-feature-card">
+              <span class="atmosphere-feature-title">Бесплатный инвентарь</span>
+              <p class="atmosphere-feature-desc">Профессиональные коврики и свежие полотенца готовы к каждому вашему визиту.</p>
+            </div>
+          </div>
+          <a href="/studio" class="luxury-text-link">Исследовать пространство &rarr;</a>
+        </div>
+
+        <div class="atmosphere-images-duo">
+          <img
+            src="/images/studio-atmosphere.webp"
+            alt="Атмосфера в студии Balance"
+            width="550"
+            height="400"
+            class="atmosphere-photo-main"
+            loading="lazy"
+          />
+          <img
+            src="/images/studio-interior-01.webp"
+            alt="Интерьер зала горячей йоги"
+            width="550"
+            height="350"
+            class="atmosphere-photo-secondary"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="luxury-section teacher-feature-section">
+    <div class="luxury-container teacher-feature-grid">
+      <div class="teacher-photo-column">
+        <div class="teacher-photo-frame">
+          <img
+            src={leadTeacher.photoUrl}
+            alt={leadTeacher.fullName}
+            width="600"
+            height="750"
+            class="teacher-portrait-image"
+            loading="lazy"
+          />
+          <span class="teacher-name-tag">{leadTeacher.fullName}</span>
+        </div>
+      </div>
+
+      <div class="teacher-bio-column">
+        <span class="luxury-badge">Преподаватели</span>
+        <h2 class="teacher-heading">Мария Миронова</h2>
+        <span class="teacher-role-label">{leadTeacher.role}</span>
+
+        <p class="teacher-bio-paragraph">
+          {leadTeacher.experienceDescription}
+        </p>
+
+        <blockquote class="teacher-quote-element">
+          {leadTeacher.teachingPhilosophy}
+        </blockquote>
+
+        <div class="teacher-actions-row">
+          <a href="/teachers" class="luxury-button-secondary">
+            Страница команды
+          </a>
+          <a
+            href={leadTeacher.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="luxury-text-link"
+          >
+            Instagram Марии {leadTeacher.instagramHandle} &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="luxury-section schedule-preview-section">
+    <div class="luxury-container">
+      <div class="section-headline-wrapper">
+        <span class="luxury-badge">Ритм недели</span>
+        <h2 class="section-title">Расписание классов</h2>
+        <p class="section-subtitle">
+          Занятия проходят каждый день в утренние и вечерние часы. Забронируйте коврик в удобное время.
+        </p>
+      </div>
+
+      <ScheduleTable />
+    </div>
+  </section>
+
+  <FaqAccordion />
+
+  <BookingSection sectionHeadline="Забронируйте практику в студии" />
+</RootLayout>
+
+<style>
+  .luxury-hero-section {
+    padding-top: clamp(3rem, 6vw, 6rem);
+    padding-bottom: clamp(3rem, 6vw, 6rem);
+  }
+
+  .hero-container-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-container-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 5rem;
+    }
+  }
+
+  .hero-main-title {
+    margin-top: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title-accent {
+    font-style: italic;
+    color: var(--color-accent-olive);
+  }
+
+  .hero-sub-title {
+    font-size: clamp(1.125rem, 1.4vw, 1.375rem);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    color: var(--color-text-secondary);
+  }
+
+  .hero-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .hero-stats-row {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .hero-stat-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-stat-value {
+    font-family: var(--font-family-serif);
+    font-size: 1.75rem;
+    line-height: 1.1;
+    color: var(--color-text-primary);
+  }
+
+  .hero-stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+    margin-top: 0.25rem;
+  }
+
+  .hero-stat-divider {
+    width: 1px;
+    height: 36px;
+    background-color: var(--color-border-subtle);
+  }
+
+  .hero-image-frame {
+    position: relative;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(52, 44, 37, 0.08);
+  }
+
+  .hero-primary-photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-image-frame:hover .hero-primary-photo {
+    transform: scale(1.02);
+  }
+
+  .hero-floating-badge {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    background-color: rgba(250, 248, 242, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--color-border-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .floating-badge-city {
+    font-family: var(--font-family-serif);
+    font-size: 1.125rem;
+    color: var(--color-accent-olive);
+  }
+
+  .floating-badge-text {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .philosophy-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .philosophy-grid {
+      grid-template-columns: 1fr 1.25fr;
+      gap: 5rem;
+      align-items: flex-start;
+    }
+  }
+
+  .philosophy-heading {
+    margin-top: 1rem;
+    line-height: 1.2;
+  }
+
+  .philosophy-lead-paragraph {
+    font-size: clamp(1.125rem, 1.3vw, 1.35rem);
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  .philosophy-secondary-paragraph {
+    margin-bottom: 2rem;
+  }
+
+  .section-headline-wrapper {
+    max-width: var(--spacing-content-reading-width);
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .section-title {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .featured-practice-card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    background-color: var(--color-background-surface);
+    border: 1px solid var(--color-border-subtle);
+    padding: clamp(1.5rem, 3.5vw, 3.5rem);
+  }
+
+  @media (min-width: 1024px) {
+    .featured-practice-card-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+  }
+
+  .practice-card-photo-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .practice-card-photo {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .practice-temperature-tag {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(66, 76, 59, 0.9);
+    color: #FAF8F2;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-family-serif);
+    font-size: 1.125rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .practice-meta-tags {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .practice-meta-pill {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+    background-color: rgba(52, 44, 37, 0.05);
+    padding: 0.35rem 0.75rem;
+  }
+
+  .featured-practice-name {
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+    margin-bottom: 1rem;
+  }
+
+  .featured-practice-desc {
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .practice-benefits-checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .practice-benefit-bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-primary);
+  }
+
+  .practice-benefit-bullet::before {
+    content: "—";
+    color: var(--color-accent-olive);
+    font-weight: 600;
+  }
+
+  .practice-card-buttons-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .atmosphere-showcase-section {
+    background-color: #FAF8F2;
+    border-top: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .atmosphere-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .atmosphere-layout-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+  }
+
+  .atmosphere-heading {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .atmosphere-text {
+    margin-bottom: 2rem;
+    line-height: 1.7;
+  }
+
+  .atmosphere-features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .atmosphere-feature-title {
+    display: block;
+    font-family: var(--font-family-serif);
+    font-size: 1.25rem;
+    color: var(--color-text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .atmosphere-feature-desc {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .atmosphere-images-duo {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .atmosphere-photo-main,
+  .atmosphere-photo-secondary {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .teacher-feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    .teacher-feature-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+  }
+
+  .teacher-photo-frame {
+    position: relative;
+  }
+
+  .teacher-portrait-image {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .teacher-name-tag {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    background-color: rgba(250, 248, 242, 0.95);
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-family-serif);
+    font-size: 1.25rem;
+    color: var(--color-text-primary);
+  }
+
+  .teacher-heading {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .teacher-role-label {
+    display: block;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-accent-olive);
+    margin-bottom: 2rem;
+  }
+
+  .teacher-bio-paragraph {
+    margin-bottom: 2rem;
+    line-height: 1.75;
+  }
+
+  .teacher-quote-element {
+    border-left: 2px solid var(--color-accent-olive);
+    padding-left: 1.5rem;
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.125rem, 1.4vw, 1.35rem);
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    font-style: italic;
+    margin-bottom: 2.5rem;
+  }
+
+  .teacher-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+  }
+</style>

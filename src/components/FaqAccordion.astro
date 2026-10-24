@@ -1,0 +1,124 @@
+---
+import { studioFaqList } from "../data/faq";
+
+interface Props {
+  headline?: string;
+  subheadline?: string;
+}
+
+const {
+  headline = "Вопросы и детали",
+  subheadline = "Всё, что важно знать перед посещением горячей студии Balance"
+} = Astro.props;
+---
+
+<section class="luxury-section faq-component-section">
+  <div class="luxury-container">
+    <div class="faq-header-wrapper">
+      <span class="luxury-badge">Внимание к деталям</span>
+      <h2 class="faq-main-heading">{headline}</h2>
+      <p class="faq-sub-heading">{subheadline}</p>
+    </div>
+
+    <div class="faq-items-container">
+      {studioFaqList.map((faqItem, itemIndex) => (
+        <details class="faq-details-element">
+          <summary class="faq-summary-element">
+            <span class="faq-question-counter">0{itemIndex + 1}</span>
+            <span class="faq-question-title">{faqItem.question}</span>
+            <span class="faq-toggle-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="faq-answer-content-box">
+            <p class="faq-answer-paragraph">{faqItem.answer}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-component-section {
+    background-color: var(--color-background-primary);
+  }
+
+  .faq-header-wrapper {
+    max-width: var(--spacing-content-reading-width);
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .faq-main-heading {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .faq-items-container {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .faq-details-element {
+    border-bottom: 1px solid var(--color-border-subtle);
+    transition: background-color var(--transition-smooth-duration) var(--transition-smooth-timing);
+  }
+
+  .faq-details-element[open] {
+    background-color: rgba(66, 76, 59, 0.03);
+  }
+
+  .faq-summary-element {
+    display: flex;
+    align-items: center;
+    padding: clamp(1.25rem, 2.5vw, 2rem) 0;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .faq-summary-element::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question-counter {
+    font-size: 0.8125rem;
+    color: var(--color-accent-olive);
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    width: 48px;
+    flex-shrink: 0;
+  }
+
+  .faq-question-title {
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.25rem, 2vw, 1.625rem);
+    color: var(--color-text-primary);
+    flex: 1;
+    line-height: 1.3;
+  }
+
+  .faq-toggle-icon {
+    font-size: 1.5rem;
+    color: var(--color-accent-olive);
+    transition: transform var(--transition-smooth-duration) var(--transition-smooth-timing);
+    padding-left: 1rem;
+    font-weight: 300;
+  }
+
+  .faq-details-element[open] .faq-toggle-icon {
+    transform: rotate(45deg);
+  }
+
+  .faq-answer-content-box {
+    padding-left: 48px;
+    padding-bottom: clamp(1.5rem, 3vw, 2.25rem);
+    padding-right: 2rem;
+    max-width: var(--spacing-content-reading-width);
+  }
+
+  .faq-answer-paragraph {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+</style>

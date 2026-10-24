@@ -1,0 +1,166 @@
+---
+import RootLayout from "../layouts/RootLayout.astro";
+import { brandConfiguration } from "../data/brand";
+---
+
+<RootLayout
+  pageTitle="Политика конфиденциальности — Balance Одесса"
+  pageDescription="Политика обработки персональных данных студии горячей йоги Balance в Одессе."
+  currentCanonicalPath="/privacy"
+>
+  <section class="luxury-section privacy-page-section">
+    <div class="luxury-container">
+      <div class="privacy-breadcrumbs">
+        <a href="/" class="breadcrumb-link">Главная</a>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-current">Политика конфиденциальности</span>
+      </div>
+
+      <div class="privacy-content-wrapper">
+        <span class="luxury-badge">Юридическая информация</span>
+        <h1 class="privacy-page-title">Политика конфиденциальности</h1>
+        <p class="privacy-page-update">Редакция от 24 октября 2026 года</p>
+
+        <div class="privacy-text-blocks">
+          <section class="privacy-block">
+            <h2 class="privacy-block-heading">1. Общие положения</h2>
+            <p class="privacy-paragraph">
+              Настоящая Политика конфиденциальности определяет порядок обработки и защиты персональной информации пользователей веб-сайта студии горячей йоги Balance ({brandConfiguration.city}, Украина). Мы относимся с предельным уважением к конфиденциальности каждого гостя и обеспечиваем безопасность передаваемых сведений.
+            </p>
+          </section>
+
+          <section class="privacy-block">
+            <h2 class="privacy-block-heading">2. Собираемая информация</h2>
+            <p class="privacy-paragraph">
+              При заполнении формы записи на сайте или обращении через Direct обрабатываются следующие данные:
+            </p>
+            <ul class="privacy-checklist">
+              <li class="privacy-checklist-item">Имя пользователя (для персонализированного обращения);</li>
+              <li class="privacy-checklist-item">Контактные данные (номер телефона, никнейм в Instagram / Telegram);</li>
+              <li class="privacy-checklist-item">Выбранное направление практики и предпочтительное время визита;</li>
+              <li class="privacy-checklist-item">Технические обезличенные данные (cookie-файлы для аналитики производительности).</li>
+            </ul>
+          </section>
+
+          <section class="privacy-block">
+            <h2 class="privacy-block-heading">3. Цели обработки данных</h2>
+            <p class="privacy-paragraph">
+              Сведения используются исключительно для:
+            </p>
+            <ul class="privacy-checklist">
+              <li class="privacy-checklist-item">Подтверждения бронирования места в зале;</li>
+              <li class="privacy-checklist-item">Отправки точного адреса студии и инструкций по подготовке;</li>
+              <li class="privacy-checklist-item">Информирования об изменениях в расписании классов.</li>
+            </ul>
+          </section>
+
+          <section class="privacy-block">
+            <h2 class="privacy-block-heading">4. Защита и передача третьим лицам</h2>
+            <p class="privacy-paragraph">
+              Студия Balance не передаёт, не продаёт и не раскрывает личные контактные данные третьим лицам или рекламным сетям. Доступ к контактным данным имеют исключительно уполномоченные администраторы студии.
+            </p>
+          </section>
+
+          <section class="privacy-block">
+            <h2 class="privacy-block-heading">5. Контакты по вопросам данных</h2>
+            <p class="privacy-paragraph">
+              По всем вопросам относительно изменения, удаления или отзыва согласия на обработку ваших данных вы можете написать нам в официальный профиль Instagram: {brandConfiguration.instagramHandle}.
+            </p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+</RootLayout>
+
+<style>
+  .privacy-page-section {
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .privacy-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 2.5rem;
+  }
+
+  .breadcrumb-link {
+    color: var(--color-text-secondary);
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--color-accent-olive);
+  }
+
+  .breadcrumb-separator {
+    color: var(--color-border-subtle);
+  }
+
+  .breadcrumb-current {
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .privacy-content-wrapper {
+    max-width: var(--spacing-content-reading-width);
+  }
+
+  .privacy-page-title {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .privacy-page-update {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 3rem;
+  }
+
+  .privacy-text-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .privacy-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .privacy-block-heading {
+    font-size: 1.5rem;
+    color: var(--color-text-primary);
+  }
+
+  .privacy-paragraph {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+
+  .privacy-checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-left: 0.5rem;
+  }
+
+  .privacy-checklist-item {
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .privacy-checklist-item::before {
+    content: "—";
+    color: var(--color-accent-olive);
+    font-weight: 600;
+  }
+</style>

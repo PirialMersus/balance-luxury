@@ -1,0 +1,225 @@
+---
+import RootLayout from "../layouts/RootLayout.astro";
+import BookingSection from "../components/BookingSection.astro";
+import { studioTeachersList } from "../data/teachers";
+---
+
+<RootLayout
+  pageTitle="Преподаватели студии — Balance Одесса"
+  pageDescription="Основательница и ведущий инструктор горячей йоги Balance в Одессе — Мария Миронова. Личный подход, бережная отстройка асан и глубокое погружение в практику."
+  currentCanonicalPath="/teachers"
+>
+  <section class="luxury-section teachers-page-hero">
+    <div class="luxury-container">
+      <div class="teachers-hero-intro">
+        <span class="luxury-badge">Команда и наставники</span>
+        <h1 class="teachers-page-title">Преподаватели студии</h1>
+        <p class="teachers-page-lead">
+          Мы верим, что горячая йога — это дисциплина, требующая не просто выполнения поз, а глубокого чувства безопасности и уважения к возможностям каждого ученика.
+        </p>
+      </div>
+
+      <div class="teachers-cards-list">
+        {studioTeachersList.map((teacherEntry) => (
+          <article class="luxury-card teacher-profile-card">
+            <div class="teacher-portrait-frame">
+              <img
+                src={teacherEntry.photoUrl}
+                alt={teacherEntry.fullName}
+                width="600"
+                height="750"
+                class="teacher-single-photo"
+                loading="eager"
+              />
+              <div class="teacher-instagram-pill">
+                <a
+                  href={teacherEntry.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="teacher-instagram-anchor"
+                >
+                  {teacherEntry.instagramHandle}
+                </a>
+              </div>
+            </div>
+
+            <div class="teacher-info-column">
+              <span class="luxury-badge">{teacherEntry.role}</span>
+              <h2 class="teacher-name-heading">{teacherEntry.fullName}</h2>
+
+              <p class="teacher-bio-text">{teacherEntry.experienceDescription}</p>
+
+              <blockquote class="teacher-quote-callout">
+                {teacherEntry.teachingPhilosophy}
+              </blockquote>
+
+              <div class="teacher-practices-group">
+                <span class="teacher-practices-title">Направления и форматы:</span>
+                <ul class="teacher-practices-list">
+                  {teacherEntry.leadPractices.map((practiceFormat) => (
+                    <li class="teacher-practice-item">{practiceFormat}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="teacher-actions-group">
+                <button
+                  type="button"
+                  class="luxury-button-primary"
+                  data-open-booking-modal
+                  data-booking-practice="private-class"
+                >
+                  Записаться к Марии Мироновой
+                </button>
+                <a
+                  href={teacherEntry.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="luxury-button-secondary"
+                >
+                  Профиль в Instagram
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <BookingSection sectionHeadline="Записаться на практику к наставнику" />
+</RootLayout>
+
+<style>
+  .teachers-page-hero {
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .teachers-hero-intro {
+    max-width: var(--spacing-content-reading-width);
+    margin-bottom: clamp(3rem, 5vw, 4.5rem);
+  }
+
+  .teachers-page-title {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .teachers-page-lead {
+    font-size: clamp(1.125rem, 1.3vw, 1.3rem);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .teachers-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .teacher-profile-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    background-color: var(--color-background-surface);
+    padding: clamp(1.5rem, 3.5vw, 3.5rem);
+  }
+
+  @media (min-width: 1024px) {
+    .teacher-profile-card {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 4.5rem;
+      align-items: center;
+    }
+  }
+
+  .teacher-portrait-frame {
+    position: relative;
+  }
+
+  .teacher-single-photo {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .teacher-instagram-pill {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: rgba(250, 248, 242, 0.95);
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.05em;
+    backdrop-filter: blur(4px);
+  }
+
+  .teacher-instagram-anchor {
+    color: var(--color-accent-olive);
+    font-weight: 600;
+  }
+
+  .teacher-name-heading {
+    margin-top: 0.75rem;
+    margin-bottom: 1.25rem;
+    font-size: clamp(2rem, 3vw, 2.75rem);
+  }
+
+  .teacher-bio-text {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    margin-bottom: 1.75rem;
+  }
+
+  .teacher-quote-callout {
+    border-left: 2px solid var(--color-accent-olive);
+    padding-left: 1.5rem;
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.125rem, 1.3vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+
+  .teacher-practices-group {
+    margin-bottom: 2rem;
+  }
+
+  .teacher-practices-title {
+    display: block;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-primary);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .teacher-practices-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .teacher-practice-item {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .teacher-practice-item::before {
+    content: "—";
+    color: var(--color-accent-olive);
+    font-weight: 600;
+  }
+
+  .teacher-actions-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+</style>

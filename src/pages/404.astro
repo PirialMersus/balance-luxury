@@ -1,0 +1,68 @@
+---
+import RootLayout from "../layouts/RootLayout.astro";
+---
+
+<RootLayout
+  pageTitle="Страница не найдена — 404 | Balance Одесса"
+  pageDescription="Запрошенная страница не существует. Вернитесь на главную страницу студии горячей йоги Balance в Одессе."
+  currentCanonicalPath="/404"
+>
+  <section class="luxury-section not-found-page-section">
+    <div class="luxury-container not-found-container">
+      <span class="luxury-badge">Ошибка 404</span>
+      <h1 class="not-found-title">Страница не найдена</h1>
+      <p class="not-found-text">
+        Возможно, ссылка устарела или адрес был введён с опечаткой. Сделайте спокойный вдох и вернитесь к исследованию студии.
+      </p>
+
+      <div class="not-found-actions-group">
+        <a href="/" class="luxury-button-primary">
+          На главную страницу
+        </a>
+        <a href="/practices" class="luxury-button-secondary">
+          Направления практик
+        </a>
+        <a href="/schedule" class="luxury-button-secondary">
+          Расписание классов
+        </a>
+      </div>
+    </div>
+  </section>
+</RootLayout>
+
+<style>
+  .not-found-page-section {
+    padding-top: clamp(5rem, 10vw, 8rem);
+    padding-bottom: clamp(5rem, 10vw, 8rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .not-found-container {
+    max-width: 680px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .not-found-title {
+    margin-top: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .not-found-text {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  .not-found-actions-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+</style>

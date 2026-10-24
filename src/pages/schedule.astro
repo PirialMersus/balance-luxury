@@ -1,0 +1,96 @@
+---
+import RootLayout from "../layouts/RootLayout.astro";
+import ScheduleTable from "../components/ScheduleTable.astro";
+import BookingSection from "../components/BookingSection.astro";
+---
+
+<RootLayout
+  pageTitle="Расписание занятий горячей йогой — Balance Одесса"
+  pageDescription="Сетка утренних и вечерних классов горячей йоги в Одессе при температуре 38–40°C. Камерные группы до 12 человек. Бронирование в Instagram Direct."
+  currentCanonicalPath="/schedule"
+>
+  <section class="luxury-section schedule-page-hero">
+    <div class="luxury-container">
+      <div class="schedule-hero-intro">
+        <span class="luxury-badge">График практик</span>
+        <h1 class="schedule-page-title">Расписание классов</h1>
+        <p class="schedule-page-lead">
+          Мы формируем сетку занятий так, чтобы вы могли практиковать в естественном ритме: мягко просыпаться утром или полностью отпускать дневное напряжение вечером.
+        </p>
+      </div>
+
+      <ScheduleTable />
+
+      <div class="schedule-preparation-banner luxury-card">
+        <div class="preparation-banner-content">
+          <span class="luxury-badge">Важно перед первым визитом</span>
+          <h3 class="preparation-banner-title">Как подготовиться к классу</h3>
+          <p class="preparation-banner-text">
+            Приходите за 15 минут до назначенного времени. Пожалуйста, не ешьте тяжёлую пищу за 2–3 часа до практики. Профессиональные нескользкие коврики, индивидуальные чистые полотенца и питьевая вода ждут вас в студии.
+          </p>
+        </div>
+        <div class="preparation-banner-action">
+          <a href="/journal/first-class-tips" class="luxury-button-secondary">
+            Памятка для первого раза &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <BookingSection sectionHeadline="Записаться на занятие из расписания" />
+</RootLayout>
+
+<style>
+  .schedule-page-hero {
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .schedule-hero-intro {
+    max-width: var(--spacing-content-reading-width);
+    margin-bottom: clamp(3rem, 5vw, 4.5rem);
+  }
+
+  .schedule-page-title {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .schedule-page-lead {
+    font-size: clamp(1.125rem, 1.3vw, 1.3rem);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .schedule-preparation-banner {
+    margin-top: 4rem;
+    background-color: var(--color-background-surface);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .schedule-preparation-banner {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 3rem;
+    }
+  }
+
+  .preparation-banner-title {
+    font-size: 1.75rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .preparation-banner-text {
+    max-width: 650px;
+    line-height: 1.7;
+  }
+
+  .preparation-banner-action {
+    flex-shrink: 0;
+  }
+</style>

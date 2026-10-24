@@ -1,0 +1,293 @@
+---
+import { studioWeeklySchedule, studioSchedulePolicy } from "../data/schedule";
+---
+
+<div class="schedule-component-wrapper">
+  <div class="schedule-days-navigation" role="tablist" aria-label="Дни недели">
+    {studioWeeklySchedule.map((dayItem, dayIndex) => (
+      <button
+        type="button"
+        role="tab"
+        class:list={["schedule-day-tab-button", { "schedule-tab-active": dayIndex === 0 }]}
+        data-day-target={`schedule-day-${dayIndex}`}
+        aria-selected={dayIndex === 0 ? "true" : "false"}
+        id={`tab-button-${dayIndex}`}
+      >
+        <span class="tab-day-short">{dayItem.dayShort}</span>
+        <span class="tab-day-full">{dayItem.dayOfWeek}</span>
+      </button>
+    ))}
+  </div>
+
+  <div class="schedule-panels-container">
+    {studioWeeklySchedule.map((dayItem, dayIndex) => (
+      <div
+        class:list={["schedule-day-panel", { "schedule-panel-active": dayIndex === 0 }]}
+        id={`schedule-day-${dayIndex}`}
+        role="tabpanel"
+        aria-labelledby={`tab-button-${dayIndex}`}
+      >
+        <div class="schedule-panel-header">
+          <h3 class="schedule-panel-day-title">{dayItem.dayOfWeek}</h3>
+          <span class="schedule-panel-badge">38–40°C · Влажность 40–50%</span>
+        </div>
+
+        <div class="schedule-slots-grid">
+          {dayItem.scheduleSlots.map((slotItem) => (
+            <div class="luxury-card schedule-slot-card">
+              <div class="slot-time-column">
+                <span class="slot-time-text">{slotItem.timePeriod}</span>
+                <span class="slot-duration-text">{slotItem.classDuration}</span>
+              </div>
+              <div class="slot-info-column">
+                <h4 class="slot-practice-title">{slotItem.practiceTitle}</h4>
+                <div class="slot-meta-group">
+                  <span class="slot-instructor-name">Инструктор: {slotItem.instructorName}</span>
+                  <span class="slot-intensity-level">{slotItem.intensityLevel}</span>
+                </div>
+              </div>
+              <div class="slot-action-column">
+                <button
+                  type="button"
+                  class="luxury-button-secondary slot-book-button"
+                  data-open-booking-modal
+                  data-booking-practice="hot-yoga"
+                  data-booking-time={slotItem.timePeriod}
+                >
+                  Записаться
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="schedule-guidance-card">
+    <div class="guidance-content">
+      <h4 class="guidance-heading">Правила посещения и запись</h4>
+      <p class="guidance-text">{studioSchedulePolicy.overviewNote}</p>
+      <p class="guidance-text">{studioSchedulePolicy.reservationGuidance}</p>
+    </div>
+    <button
+      type="button"
+      class="luxury-button-primary guidance-cta-button"
+      data-open-booking-modal
+    >
+      Забронировать свободный коврик
+    </button>
+  </div>
+</div>
+
+<script>
+  const dayTabButtons = document.querySelectorAll(".schedule-day-tab-button");
+  const dayPanels = document.querySelectorAll(".schedule-day-panel");
+
+  dayTabButtons.forEach((tabButton) => {
+    tabButton.addEventListener("click", () => {
+      const targetPanelId = tabButton.getAttribute("data-day-target");
+
+      dayTabButtons.forEach((otherButton) => {
+        otherButton.classList.remove("schedule-tab-active");
+        otherButton.setAttribute("aria-selected", "false");
+      });
+      dayPanels.forEach((panel) => {
+        panel.classList.remove("schedule-panel-active");
+      });
+
+      tabButton.classList.add("schedule-tab-active");
+      tabButton.setAttribute("aria-selected", "true");
+
+      if (targetPanelId) {
+        const matchingPanel = document.getElementById(targetPanelId);
+        matchingPanel?.classList.add("schedule-panel-active");
+      }
+    });
+  });
+</script>
+
+<style>
+  .schedule-component-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .schedule-days-navigation {
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--color-border-subtle);
+    gap: 0.5rem;
+    padding-bottom: 0.25rem;
+    scrollbar-width: none;
+  }
+
+  .schedule-days-navigation::-webkit-scrollbar {
+    display: none;
+  }
+
+  .schedule-day-tab-button {
+    background: transparent;
+    border: none;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-family: var(--font-family-sans);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    border-bottom: 2px solid transparent;
+    transition: all var(--transition-smooth-duration) var(--transition-smooth-timing);
+    white-space: nowrap;
+  }
+
+  .tab-day-short {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+  }
+
+  .tab-day-full {
+    font-size: 0.9375rem;
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .schedule-tab-active {
+    border-bottom-color: var(--color-accent-olive);
+  }
+
+  .schedule-tab-active .tab-day-short {
+    color: var(--color-accent-olive);
+  }
+
+  .schedule-tab-active .tab-day-full {
+    color: var(--color-accent-olive);
+    font-weight: 600;
+  }
+
+  .schedule-day-panel {
+    display: none;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .schedule-panel-active {
+    display: flex;
+  }
+
+  .schedule-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .schedule-panel-day-title {
+    font-size: 1.75rem;
+  }
+
+  .schedule-panel-badge {
+    font-size: 0.8125rem;
+    color: var(--color-accent-olive);
+    background-color: rgba(66, 76, 59, 0.08);
+    padding: 0.35rem 0.85rem;
+    letter-spacing: 0.05em;
+  }
+
+  .schedule-slots-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .schedule-slot-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .schedule-slot-card {
+      grid-template-columns: 180px 1fr auto;
+      gap: 2rem;
+    }
+  }
+
+  .slot-time-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slot-time-text {
+    font-family: var(--font-family-serif);
+    font-size: 1.5rem;
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .slot-duration-text {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+  }
+
+  .slot-practice-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .slot-meta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .slot-book-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.75rem;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .slot-book-button {
+      width: auto;
+    }
+  }
+
+  .schedule-guidance-card {
+    background-color: var(--color-background-surface);
+    border: 1px solid var(--color-border-subtle);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .schedule-guidance-card {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .guidance-heading {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .guidance-text {
+    font-size: 0.9375rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .guidance-cta-button {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+</style>

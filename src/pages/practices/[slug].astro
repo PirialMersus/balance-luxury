@@ -1,0 +1,422 @@
+---
+import RootLayout from "../../layouts/RootLayout.astro";
+import BookingSection from "../../components/BookingSection.astro";
+import { studioPracticesList, type PracticeDetail } from "../../data/practices";
+import { studioTeachersList } from "../../data/teachers";
+
+export function getStaticPaths() {
+  return studioPracticesList.map((practiceItem) => ({
+    params: { slug: practiceItem.slug },
+    props: { currentPractice: practiceItem }
+  }));
+}
+
+interface Props {
+  currentPractice: PracticeDetail;
+}
+
+const { currentPractice } = Astro.props;
+const leadInstructor = studioTeachersList[0];
+---
+
+<RootLayout
+  pageTitle={`${currentPractice.title} — Balance Одесса`}
+  pageDescription={currentPractice.summary}
+  ogImage={currentPractice.heroImage}
+  currentCanonicalPath={`/practices/${currentPractice.slug}`}
+>
+  <article class="luxury-section practice-single-hero">
+    <div class="luxury-container">
+      <div class="practice-breadcrumbs">
+        <a href="/" class="breadcrumb-link">Главная</a>
+        <span class="breadcrumb-separator">/</span>
+        <a href="/practices" class="breadcrumb-link">Направления</a>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-current">{currentPractice.title}</span>
+      </div>
+
+      <div class="practice-hero-header">
+        <span class="luxury-badge">{currentPractice.intensityLevel}</span>
+        <h1 class="practice-hero-title">{currentPractice.title}</h1>
+        <p class="practice-hero-lead">{currentPractice.subtitle}</p>
+      </div>
+
+      <div class="practice-hero-cover-wrapper">
+        <img
+          src={currentPractice.heroImage}
+          alt={currentPractice.title}
+          width="1360"
+          height="750"
+          class="practice-hero-cover-photo"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class="practice-floating-metrics-bar">
+          <div class="metric-item">
+            <span class="metric-value">{currentPractice.temperature}</span>
+            <span class="metric-label">Температура зала</span>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-item">
+            <span class="metric-value">{currentPractice.humidity}</span>
+            <span class="metric-label">Влажность воздуха</span>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-item">
+            <span class="metric-value">{currentPractice.duration}</span>
+            <span class="metric-label">Длительность</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="practice-content-grid">
+        <div class="practice-main-text-column">
+          <section class="practice-content-block">
+            <h2 class="content-block-heading">О направлении</h2>
+            <p class="content-block-paragraph">{currentPractice.summary}</p>
+            <p class="content-block-paragraph">{currentPractice.philosophy}</p>
+          </section>
+
+          <section class="practice-content-block">
+            <h2 class="content-block-heading">Кому подходит практика</h2>
+            <ul class="content-feature-checklist">
+              {currentPractice.targetAudience.map((audienceTarget) => (
+                <li class="content-feature-item">{audienceTarget}</li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="practice-content-block">
+            <h2 class="content-block-heading">Терапевтический эффект</h2>
+            <ul class="content-feature-checklist">
+              {currentPractice.keyBenefits.map((benefitEntry) => (
+                <li class="content-feature-item">{benefitEntry}</li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="practice-content-block">
+            <h2 class="content-block-heading">Подготовка к классу</h2>
+            <ul class="content-feature-checklist">
+              {currentPractice.preparationSteps.map((preparationStep) => (
+                <li class="content-feature-item">{preparationStep}</li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="practice-content-block contraindications-block">
+            <h3 class="contraindications-heading">Важные противопоказания</h3>
+            <ul class="contraindications-list">
+              {currentPractice.contraindications.map((contraindicationEntry) => (
+                <li class="contraindication-item">{contraindicationEntry}</li>
+              ))}
+            </ul>
+          </section>
+        </div>
+
+        <aside class="practice-sidebar-column">
+          <div class="luxury-card sidebar-instructor-card">
+            <span class="luxury-badge">Ведущий инструктор</span>
+            <div class="sidebar-instructor-profile">
+              <img
+                src={leadInstructor.photoUrl}
+                alt={leadInstructor.fullName}
+                width="120"
+                height="120"
+                class="sidebar-instructor-avatar"
+                loading="lazy"
+              />
+              <div>
+                <h4 class="sidebar-instructor-name">{leadInstructor.fullName}</h4>
+                <span class="sidebar-instructor-role">{leadInstructor.role}</span>
+              </div>
+            </div>
+            <p class="sidebar-instructor-text">
+              Личное сопровождение каждого практикующего и бережная отстройка асан в нагретом пространстве.
+            </p>
+            <a href="/teachers" class="luxury-text-link">О преподавателе &rarr;</a>
+          </div>
+
+          <div class="luxury-card sidebar-booking-card">
+            <h4 class="sidebar-card-title">Забронировать коврик</h4>
+            <p class="sidebar-card-text">
+              Группы камерные (до 12 человек). Запись подтверждается персонально в Direct.
+            </p>
+            <button
+              type="button"
+              class="luxury-button-primary sidebar-action-button"
+              data-open-booking-modal
+              data-booking-practice={currentPractice.slug}
+            >
+              Записаться на практику
+            </button>
+            <a href="/schedule" class="luxury-button-secondary sidebar-action-button">
+              Расписание классов
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <BookingSection
+    initialPracticeSlug={currentPractice.slug}
+    sectionHeadline={`Запись на ${currentPractice.title}`}
+  />
+</RootLayout>
+
+<style>
+  .practice-single-hero {
+    padding-top: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .practice-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb-link {
+    color: var(--color-text-secondary);
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--color-accent-olive);
+  }
+
+  .breadcrumb-separator {
+    color: var(--color-border-subtle);
+  }
+
+  .breadcrumb-current {
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .practice-hero-header {
+    max-width: var(--spacing-content-reading-width);
+    margin-bottom: 2.5rem;
+  }
+
+  .practice-hero-title {
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .practice-hero-lead {
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.25rem, 2vw, 1.625rem);
+    color: var(--color-accent-olive);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .practice-hero-cover-wrapper {
+    position: relative;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .practice-hero-cover-photo {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 600px;
+    object-fit: cover;
+  }
+
+  .practice-floating-metrics-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2rem;
+    background-color: var(--color-background-surface);
+    border: 1px solid var(--color-border-subtle);
+    padding: 1.5rem 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .metric-value {
+    font-family: var(--font-family-serif);
+    font-size: 1.75rem;
+    color: var(--color-text-primary);
+  }
+
+  .metric-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+  }
+
+  .metric-divider {
+    width: 1px;
+    height: 36px;
+    background-color: var(--color-border-subtle);
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .metric-divider {
+      display: block;
+    }
+  }
+
+  .practice-content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .practice-content-grid {
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 5rem;
+    }
+  }
+
+  .practice-main-text-column {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .practice-content-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .content-block-heading {
+    font-size: 2rem;
+    border-bottom: 1px solid var(--color-border-subtle);
+    padding-bottom: 0.75rem;
+  }
+
+  .content-block-paragraph {
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+
+  .content-feature-checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .content-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    font-size: 1.0625rem;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+  }
+
+  .content-feature-item::before {
+    content: "—";
+    color: var(--color-accent-olive);
+    font-weight: 600;
+  }
+
+  .contraindications-block {
+    background-color: rgba(66, 76, 59, 0.04);
+    border: 1px solid var(--color-border-subtle);
+    padding: 2rem;
+  }
+
+  .contraindications-heading {
+    font-size: 1.35rem;
+    color: var(--color-accent-olive);
+  }
+
+  .contraindications-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .contraindication-item {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .contraindication-item::before {
+    content: "&bull;";
+    color: var(--color-warm-amber);
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .practice-sidebar-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .sidebar-instructor-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .sidebar-instructor-profile {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .sidebar-instructor-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  .sidebar-instructor-name {
+    font-size: 1.25rem;
+  }
+
+  .sidebar-instructor-role {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent-olive);
+  }
+
+  .sidebar-instructor-text {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .sidebar-booking-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .sidebar-card-title {
+    font-size: 1.35rem;
+  }
+
+  .sidebar-card-text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .sidebar-action-button {
+    width: 100%;
+  }
+</style>

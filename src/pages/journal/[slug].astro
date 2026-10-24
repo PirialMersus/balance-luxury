@@ -1,0 +1,247 @@
+---
+import RootLayout from "../../layouts/RootLayout.astro";
+import BookingSection from "../../components/BookingSection.astro";
+import { studioJournalPosts, type JournalPost } from "../../data/journal";
+
+export function getStaticPaths() {
+  return studioJournalPosts.map((postEntry) => ({
+    params: { slug: postEntry.slug },
+    props: { currentArticle: postEntry }
+  }));
+}
+
+interface Props {
+  currentArticle: JournalPost;
+}
+
+const { currentArticle } = Astro.props;
+---
+
+<RootLayout
+  pageTitle={`${currentArticle.title} — Журнал Balance Одесса`}
+  pageDescription={currentArticle.excerpt}
+  ogImage={currentArticle.coverImage}
+  currentCanonicalPath={`/journal/${currentArticle.slug}`}
+  schemaType="article"
+  articlePublishedTime={currentArticle.publishedAt}
+  articleAuthor={currentArticle.authorName}
+>
+  <article class="luxury-section article-single-section">
+    <div class="luxury-container">
+      <div class="article-breadcrumbs">
+        <a href="/" class="breadcrumb-link">Главная</a>
+        <span class="breadcrumb-separator">/</span>
+        <a href="/journal" class="breadcrumb-link">Журнал</a>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-current">{currentArticle.title}</span>
+      </div>
+
+      <header class="article-header-wrapper">
+        <div class="article-meta-group">
+          <span class="luxury-badge">{currentArticle.tags[0]}</span>
+          <span class="article-meta-date">{currentArticle.publishedAt}</span>
+          <span class="article-meta-reading-time">{currentArticle.readingTime}</span>
+        </div>
+
+        <h1 class="article-main-title">{currentArticle.title}</h1>
+        <p class="article-excerpt-lead">{currentArticle.excerpt}</p>
+
+        <div class="article-author-row">
+          <img
+            src="/images/teacher-maria.webp"
+            alt={currentArticle.authorName}
+            width="48"
+            height="48"
+            class="article-author-avatar"
+            loading="eager"
+          />
+          <div class="article-author-info">
+            <span class="article-author-name">{currentArticle.authorName}</span>
+            <span class="article-author-role">{currentArticle.authorRole}</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="article-cover-frame">
+        <img
+          src={currentArticle.coverImage}
+          alt={currentArticle.title}
+          width="1200"
+          height="650"
+          class="article-cover-image"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+
+      <div class="article-reading-body">
+        {currentArticle.bodyParagraphs.map((paragraphText) => (
+          <p class="article-paragraph-element">{paragraphText}</p>
+        ))}
+
+        <div class="article-tags-cloud">
+          <span class="tags-cloud-label">Тематика:</span>
+          {currentArticle.tags.map((tagItem) => (
+            <span class="article-tag-item">{tagItem}</span>
+          ))}
+        </div>
+
+        <div class="article-back-to-journal">
+          <a href="/journal" class="luxury-button-secondary">
+            &larr; Вернуться в журнал
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <BookingSection sectionHeadline="Попробовать горячую йогу на практике" />
+</RootLayout>
+
+<style>
+  .article-single-section {
+    padding-top: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .article-breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb-link {
+    color: var(--color-text-secondary);
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--color-accent-olive);
+  }
+
+  .breadcrumb-separator {
+    color: var(--color-border-subtle);
+  }
+
+  .breadcrumb-current {
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .article-header-wrapper {
+    max-width: var(--spacing-content-reading-width);
+    margin-bottom: 2.5rem;
+  }
+
+  .article-meta-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+  }
+
+  .article-main-title {
+    margin-bottom: 1.25rem;
+    font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+  }
+
+  .article-excerpt-lead {
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    line-height: 1.5;
+    color: var(--color-accent-olive);
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+
+  .article-author-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .article-author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .article-author-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .article-author-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .article-author-role {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+  }
+
+  .article-cover-frame {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .article-cover-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 550px;
+    object-fit: cover;
+  }
+
+  .article-reading-body {
+    max-width: var(--spacing-content-reading-width);
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .article-paragraph-element {
+    font-size: 1.125rem;
+    line-height: 1.85;
+    color: var(--color-text-primary);
+  }
+
+  .article-tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    padding-top: 2rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .tags-cloud-label {
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+  }
+
+  .article-tag-item {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent-olive);
+    background-color: rgba(66, 76, 59, 0.06);
+    padding: 0.35rem 0.75rem;
+  }
+
+  .article-back-to-journal {
+    margin-top: 2rem;
+  }
+</style>

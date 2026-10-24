@@ -1,0 +1,234 @@
+---
+import RootLayout from "../layouts/RootLayout.astro";
+import BookingSection from "../components/BookingSection.astro";
+---
+
+<RootLayout
+  pageTitle="О студии Balance — Пространство горячей йоги в Одессе"
+  pageDescription="Концепция, интерьер и микроклимат студии Balance в Одессе. Инфракрасный прогрев зала 38–40°C, приточная вентиляция с непрерывной фильтрацией и тишина."
+  currentCanonicalPath="/studio"
+>
+  <section class="luxury-section studio-page-hero">
+    <div class="luxury-container">
+      <div class="studio-hero-intro">
+        <span class="luxury-badge">Пространство и эстетика</span>
+        <h1 class="studio-page-title">Студия, созданная для тишины</h1>
+        <p class="studio-page-lead">
+          Balance родился из потребности создать бескомпромиссное убежище от городского стресса: место, где архитектура, свет, тепло и акустика работают как единый медитативный инструмент.
+        </p>
+      </div>
+
+      <div class="studio-fullwidth-visual">
+        <img
+          src="/images/studio-interior-01.webp"
+          alt="Интерьер зала горячей йоги Balance в Одессе"
+          width="1360"
+          height="700"
+          class="studio-cover-photo"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class="studio-caption-pill">
+          Камерный зал практик · Вместимость до 12 ковриков
+        </div>
+      </div>
+
+      <div class="studio-narrative-grid">
+        <div class="studio-narrative-column">
+          <span class="luxury-badge">Философия тепла</span>
+          <h2 class="narrative-heading">Почему мы выбрали горячую йогу</h2>
+          <p class="narrative-paragraph">
+            В обычной обстановке наш разум непрерывно блуждает между прошлым и будущим, прокручивая диалоги и списки дел. В зале горячей йоги при температуре 38–40°C физиология не оставляет места иллюзиям.
+          </p>
+          <p class="narrative-paragraph">
+            Тело раскрывается глубже, дыхание становится осознанным якорем, а интенсивное потоотделение смывает не только токсины, но и накопленное эмоциональное напряжение. Вы выходите в город обновлённым человеком.
+          </p>
+        </div>
+
+        <div class="studio-narrative-column">
+          <span class="luxury-badge">Инженерия микроклимата</span>
+          <h2 class="narrative-heading">Технологии чистого воздуха</h2>
+          <p class="narrative-paragraph">
+            Создать правильный микроклимат для горячей йоги — сложнейшая инженерная задача. Мы не используем душные калориферы. Зал прогревается мягкими инфракрасными излучателями, которые нагревают непосредственно тело и пол, сохраняя воздух лёгким для дыхания.
+          </p>
+          <p class="narrative-paragraph">
+            Промышленная приточно-вытяжная установка осуществляет трёхкратный обмен очищенного воздуха в час с постоянным контролем содержания кислорода.
+          </p>
+        </div>
+      </div>
+
+      <div class="studio-atmosphere-dual-block">
+        <div class="dual-block-image-frame">
+          <img
+            src="/images/studio-atmosphere.webp"
+            alt="Атмосфера тишины в студии йоги"
+            width="650"
+            height="450"
+            class="dual-block-photo"
+            loading="lazy"
+          />
+        </div>
+        <div class="dual-block-content luxury-card">
+          <span class="luxury-badge">Внимание к деталям</span>
+          <h3 class="dual-block-title">Сервис, где всё продумано</h3>
+          <p class="dual-block-text">
+            Мы позаботились о том, чтобы сборы на практику занимали минимум времени. Вам не нужно носить с собой тяжёлую сумку с ковриком и банными полотенцами.
+          </p>
+          <ul class="dual-block-checklist">
+            <li class="dual-checklist-item">Премиальные коврики с влаговпитывающим покрытием</li>
+            <li class="dual-checklist-item">Индивидуальные чистые хлопковые полотенца</li>
+            <li class="dual-checklist-item">Душевые кабины с натуральной органической косметикой</li>
+            <li class="dual-checklist-item">Свежая фильтрованная питьевая вода</li>
+          </ul>
+          <a href="/schedule" class="luxury-button-primary dual-action-button">
+            Посмотреть расписание студии
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <BookingSection sectionHeadline="Посетите студию Balance" />
+</RootLayout>
+
+<style>
+  .studio-page-hero {
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .studio-hero-intro {
+    max-width: var(--spacing-content-reading-width);
+    margin-bottom: clamp(3rem, 5vw, 4.5rem);
+  }
+
+  .studio-page-title {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .studio-page-lead {
+    font-size: clamp(1.125rem, 1.3vw, 1.3rem);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .studio-fullwidth-visual {
+    position: relative;
+    margin-bottom: clamp(4rem, 7vw, 6rem);
+  }
+
+  .studio-cover-photo {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 650px;
+    object-fit: cover;
+  }
+
+  .studio-caption-pill {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    background-color: rgba(250, 248, 242, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 0.75rem 1.25rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent-olive);
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  .studio-narrative-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+    margin-bottom: clamp(4rem, 7vw, 6rem);
+  }
+
+  @media (min-width: 1024px) {
+    .studio-narrative-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+  }
+
+  .narrative-heading {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+  }
+
+  .narrative-paragraph {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+  }
+
+  .studio-atmosphere-dual-block {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .studio-atmosphere-dual-block {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .dual-block-photo {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .dual-block-content {
+    background-color: var(--color-background-surface);
+    padding: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .dual-block-title {
+    font-size: 1.75rem;
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .dual-block-text {
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .dual-block-checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .dual-checklist-item {
+    font-size: 0.9375rem;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .dual-checklist-item::before {
+    content: "—";
+    color: var(--color-accent-olive);
+    font-weight: 600;
+  }
+
+  .dual-action-button {
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .dual-action-button {
+      width: auto;
+    }
+  }
+</style>

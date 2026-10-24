@@ -1,0 +1,186 @@
+---
+import RootLayout from "../../layouts/RootLayout.astro";
+import { studioJournalPosts } from "../../data/journal";
+---
+
+<RootLayout
+  pageTitle="Журнал практик и осознанности — Balance Одесса"
+  pageDescription="Статьи и экспертные материалы о горячей йоге, детоксикации организма, подготовке к первым занятиям и осознанной работе с дыханием."
+  currentCanonicalPath="/journal"
+>
+  <section class="luxury-section journal-page-hero">
+    <div class="luxury-container">
+      <div class="journal-hero-intro">
+        <span class="luxury-badge">Знания и опыт</span>
+        <h1 class="journal-page-title">Журнал студии</h1>
+        <p class="journal-page-lead">
+          Мы делимся честным опытом работы с телом в условиях тепла, рекомендациями по биомеханике и ответами на вопросы, которые возникают на коврике.
+        </p>
+      </div>
+
+      <div class="journal-posts-grid">
+        {studioJournalPosts.map((postEntry) => (
+          <article class="luxury-card journal-card-item">
+            <a href={`/journal/${postEntry.slug}`} class="journal-card-image-link">
+              <img
+                src={postEntry.coverImage}
+                alt={postEntry.title}
+                width="600"
+                height="400"
+                class="journal-card-cover-photo"
+                loading="lazy"
+              />
+            </a>
+
+            <div class="journal-card-content">
+              <div class="journal-card-meta">
+                <span class="journal-card-date">{postEntry.publishedAt}</span>
+                <span class="journal-meta-dot">&bull;</span>
+                <span class="journal-card-reading-time">{postEntry.readingTime} чтения</span>
+              </div>
+
+              <h2 class="journal-card-heading">
+                <a href={`/journal/${postEntry.slug}`} class="journal-card-title-link">
+                  {postEntry.title}
+                </a>
+              </h2>
+
+              <p class="journal-card-excerpt">
+                {postEntry.excerpt}
+              </p>
+
+              <div class="journal-card-tags-row">
+                {postEntry.tags.map((tagLabel) => (
+                  <span class="journal-card-tag-pill">{tagLabel}</span>
+                ))}
+              </div>
+
+              <div class="journal-card-footer">
+                <a href={`/journal/${postEntry.slug}`} class="luxury-text-link">
+                  Читать полностью &rarr;
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</RootLayout>
+
+<style>
+  .journal-page-hero {
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .journal-hero-intro {
+    max-width: var(--spacing-content-reading-width);
+    margin-bottom: clamp(3rem, 5vw, 4.5rem);
+  }
+
+  .journal-page-title {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .journal-page-lead {
+    font-size: clamp(1.125rem, 1.3vw, 1.3rem);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .journal-posts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .journal-posts-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3.5rem;
+    }
+  }
+
+  .journal-card-item {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--color-background-surface);
+  }
+
+  .journal-card-image-link {
+    display: block;
+    overflow: hidden;
+  }
+
+  .journal-card-cover-photo {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .journal-card-item:hover .journal-card-cover-photo {
+    transform: scale(1.03);
+  }
+
+  .journal-card-content {
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .journal-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  .journal-meta-dot {
+    color: var(--color-warm-amber);
+  }
+
+  .journal-card-heading {
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  .journal-card-title-link:hover {
+    color: var(--color-accent-olive);
+  }
+
+  .journal-card-excerpt {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+
+  .journal-card-tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .journal-card-tag-pill {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent-olive);
+    background-color: rgba(66, 76, 59, 0.06);
+    padding: 0.25rem 0.65rem;
+  }
+
+  .journal-card-footer {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-border-subtle);
+  }
+</style>

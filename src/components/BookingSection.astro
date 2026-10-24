@@ -1,0 +1,435 @@
+---
+import { studioPracticesList } from "../data/practices";
+
+interface Props {
+  initialPracticeSlug?: string;
+  sectionHeadline?: string;
+}
+
+const {
+  initialPracticeSlug = "hot-yoga",
+  sectionHeadline = "Запись на практику"
+} = Astro.props;
+---
+
+<section class="luxury-section booking-interactive-section" id="booking">
+  <div class="luxury-container">
+    <div class="booking-layout-grid">
+      <div class="booking-information-column">
+        <span class="luxury-badge">Персональный визит</span>
+        <h2 class="booking-section-title">{sectionHeadline}</h2>
+        <p class="booking-section-description">
+          Зал вмещает до 12 практикующих для сохранения идеального микроклимата 38–40°C и личного внимания наставника. Забронируйте коврик заранее.
+        </p>
+
+        <div class="booking-direct-perks">
+          <div class="booking-perk-item">
+            <span class="booking-perk-bullet">&bull;</span>
+            <div>
+              <strong class="booking-perk-heading">Индивидуальное подтверждение</strong>
+              <p class="booking-perk-text">Администратор студии согласует точное время и вышлет схему проезда.</p>
+            </div>
+          </div>
+          <div class="booking-perk-item">
+            <span class="booking-perk-bullet">&bull;</span>
+            <div>
+              <strong class="booking-perk-heading">Всё включено</strong>
+              <p class="booking-perk-text">Предоставляем коврики, полотенца и воду бесплатно к каждому занятию.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-direct-fallback-box">
+          <span class="fallback-box-label">Быстрое бронирование</span>
+          <p class="fallback-box-text">Желаете выбрать конкретный класс в удобном окне?</p>
+          <button
+            type="button"
+            class="luxury-button-secondary fallback-modal-button"
+            data-open-booking-modal
+            data-booking-practice={initialPracticeSlug}
+          >
+            Открыть окно бронирования &rarr;
+          </button>
+        </div>
+      </div>
+
+      <div class="booking-form-column">
+        <div class="luxury-card booking-card-container">
+          <form class="booking-form-element" id="studioBookingForm" novalidate>
+            <div class="form-field-group">
+              <label for="clientNameInput" class="form-label-element">Ваше имя</label>
+              <input
+                type="text"
+                id="clientNameInput"
+                name="clientName"
+                placeholder="Как к вам обращаться"
+                class="form-input-element"
+                required
+                minlength="2"
+              />
+              <span class="form-validation-error-message" id="nameErrorMessage">Пожалуйста, укажите ваше имя (не менее 2 символов)</span>
+            </div>
+
+            <div class="form-field-group">
+              <label for="clientContactInput" class="form-label-element">Телефон или контакт в Telegram / Instagram</label>
+              <input
+                type="text"
+                id="clientContactInput"
+                name="clientContact"
+                placeholder="+380... или @никнейм"
+                class="form-input-element"
+                required
+                minlength="5"
+              />
+              <span class="form-validation-error-message" id="contactErrorMessage">Укажите контактный номер или ник для связи</span>
+            </div>
+
+            <div class="form-field-group">
+              <label for="practiceSelectInput" class="form-label-element">Направление практики</label>
+              <select id="practiceSelectInput" name="practiceSlug" class="form-select-element">
+                {studioPracticesList.map((practiceEntry) => (
+                  <option value={practiceEntry.slug} selected={practiceEntry.slug === initialPracticeSlug}>
+                    {practiceEntry.title} ({practiceEntry.temperature})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div class="form-field-group">
+              <label for="timePreferenceInput" class="form-label-element">Желаемое время визита</label>
+              <select id="timePreferenceInput" name="timePreference" class="form-select-element">
+                <option value="morning">Утренний класс (09:30 — 11:00)</option>
+                <option value="evening">Вечерний класс (18:30 / 19:00)</option>
+                <option value="weekend">Выходной день (11:00 — 12:30)</option>
+                <option value="private">Индивидуальное время (по согласованию)</option>
+              </select>
+            </div>
+
+            <div class="form-field-group form-checkbox-group">
+              <input
+                type="checkbox"
+                id="privacyConsentCheckbox"
+                name="privacyConsent"
+                class="form-checkbox-element"
+                required
+              />
+              <label for="privacyConsentCheckbox" class="form-checkbox-label">
+                Я согласен с <a href="/privacy" class="form-inline-privacy-link" target="_blank">политикой конфиденциальности</a>
+              </label>
+              <span class="form-validation-error-message" id="consentErrorMessage">Необходимо согласие с политикой конфиденциальности</span>
+            </div>
+
+            <button type="submit" class="luxury-button-primary booking-submit-button">
+              Забронировать коврик в зале
+            </button>
+
+            <div class="booking-feedback-banner" id="bookingFeedbackBanner" aria-live="polite">
+              <p class="feedback-banner-title">&check; Коврик успешно зарезервирован</p>
+              <p class="feedback-banner-text" id="feedbackBannerDetailsText"></p>
+              <div class="feedback-code-badge">
+                Номер брони: <strong id="feedbackBookingCodeValue"></strong>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const bookingForm = document.getElementById("studioBookingForm") as HTMLFormElement | null;
+  const clientNameInput = document.getElementById("clientNameInput") as HTMLInputElement | null;
+  const clientContactInput = document.getElementById("clientContactInput") as HTMLInputElement | null;
+  const practiceSelectInput = document.getElementById("practiceSelectInput") as HTMLSelectElement | null;
+  const timePreferenceInput = document.getElementById("timePreferenceInput") as HTMLSelectElement | null;
+  const privacyConsentCheckbox = document.getElementById("privacyConsentCheckbox") as HTMLInputElement | null;
+
+  const nameErrorMessage = document.getElementById("nameErrorMessage");
+  const contactErrorMessage = document.getElementById("contactErrorMessage");
+  const consentErrorMessage = document.getElementById("consentErrorMessage");
+  const bookingFeedbackBanner = document.getElementById("bookingFeedbackBanner");
+  const feedbackBannerDetailsText = document.getElementById("feedbackBannerDetailsText");
+
+  bookingForm?.addEventListener("submit", (submissionEvent) => {
+    submissionEvent.preventDefault();
+
+    let hasValidationError = false;
+
+    if (!clientNameInput || clientNameInput.value.trim().length < 2) {
+      nameErrorMessage?.classList.add("error-message-visible");
+      hasValidationError = true;
+    } else {
+      nameErrorMessage?.classList.remove("error-message-visible");
+    }
+
+    if (!clientContactInput || clientContactInput.value.trim().length < 5) {
+      contactErrorMessage?.classList.add("error-message-visible");
+      hasValidationError = true;
+    } else {
+      contactErrorMessage?.classList.remove("error-message-visible");
+    }
+
+    if (!privacyConsentCheckbox || !privacyConsentCheckbox.checked) {
+      consentErrorMessage?.classList.add("error-message-visible");
+      hasValidationError = true;
+    } else {
+      consentErrorMessage?.classList.remove("error-message-visible");
+    }
+
+    if (hasValidationError) {
+      return;
+    }
+
+    const enteredClientName = clientNameInput ? clientNameInput.value.trim() : "";
+    const enteredContact = clientContactInput ? clientContactInput.value.trim() : "";
+    const selectedPracticeName = practiceSelectInput ? practiceSelectInput.options[practiceSelectInput.selectedIndex].text : "Горячая йога";
+    const selectedTimeSlot = timePreferenceInput ? timePreferenceInput.options[timePreferenceInput.selectedIndex].text : "Утро";
+
+    const bookingCode = `BALANCE-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    const bookingRecord = {
+      code: bookingCode,
+      createdAt: new Date().toISOString(),
+      clientName: enteredClientName,
+      clientContact: enteredContact,
+      practice: selectedPracticeName,
+      timeSlot: selectedTimeSlot,
+      status: "pending_confirmation"
+    };
+
+    try {
+      const existingBookings = JSON.parse(localStorage.getItem("balance_studio_bookings") || "[]");
+      existingBookings.push(bookingRecord);
+      localStorage.setItem("balance_studio_bookings", JSON.stringify(existingBookings));
+    } catch {
+      // LocalStorage handling
+    }
+
+    const feedbackBookingCodeValue = document.getElementById("feedbackBookingCodeValue");
+    if (feedbackBookingCodeValue) {
+      feedbackBookingCodeValue.textContent = bookingCode;
+    }
+
+    if (feedbackBannerDetailsText) {
+      feedbackBannerDetailsText.textContent = `Благодарим, ${enteredClientName}! Мы забронировали для вас место на класс "${selectedPracticeName}" (${selectedTimeSlot}). Администратор Balance свяжется с вами по указанному контакту (${enteredContact}) в течение 15 минут для подтверждения и отправки схемы проезда.`;
+    }
+
+    if (bookingFeedbackBanner) {
+      bookingFeedbackBanner.classList.add("feedback-banner-visible");
+    }
+
+    bookingForm?.reset();
+  });
+</script>
+
+<style>
+  .booking-interactive-section {
+    background-color: var(--color-background-surface);
+    border-top: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .booking-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .booking-layout-grid {
+      grid-template-columns: 1fr 1.1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+  }
+
+  .booking-section-title {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .booking-section-description {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .booking-direct-perks {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .booking-perk-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .booking-perk-bullet {
+    color: var(--color-warm-amber);
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .booking-perk-heading {
+    display: block;
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .booking-perk-text {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+  }
+
+  .booking-direct-fallback-box {
+    background-color: rgba(66, 76, 59, 0.05);
+    border: 1px solid var(--color-border-subtle);
+    padding: 1.5rem;
+  }
+
+  .fallback-box-label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-olive);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .fallback-box-text {
+    font-size: 0.9375rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .booking-card-container {
+    background-color: #FFFFFF;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  .booking-form-element {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-label-element {
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .form-input-element,
+  .form-select-element {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--color-border-subtle);
+    background-color: var(--color-background-surface);
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    transition: border-color var(--transition-smooth-duration) var(--transition-smooth-timing);
+    border-radius: 0;
+  }
+
+  .form-input-element:focus,
+  .form-select-element:focus {
+    border-color: var(--color-accent-olive);
+    outline: none;
+  }
+
+  .form-checkbox-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .form-checkbox-element {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-accent-olive);
+    cursor: pointer;
+  }
+
+  .form-checkbox-label {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+
+  .form-inline-privacy-link {
+    color: var(--color-accent-olive);
+    text-decoration: underline;
+  }
+
+  .form-validation-error-message {
+    display: none;
+    font-size: 0.75rem;
+    color: #A33A3A;
+  }
+
+  .error-message-visible {
+    display: block;
+  }
+
+  .booking-submit-button {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 1.25rem;
+  }
+
+  .booking-feedback-banner {
+    display: none;
+    background-color: #F4F7F2;
+    border: 1px solid var(--color-accent-sage);
+    padding: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .feedback-banner-visible {
+    display: block;
+  }
+
+  .feedback-banner-title {
+    font-family: var(--font-family-serif);
+    font-size: 1.25rem;
+    color: var(--color-accent-olive);
+    margin-bottom: 0.5rem;
+  }
+
+  .feedback-banner-text {
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .fallback-modal-button {
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+    font-size: 0.75rem;
+  }
+
+  .feedback-code-badge {
+    display: inline-block;
+    background-color: var(--color-background-surface);
+    border: 1px solid var(--color-border-subtle);
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+  }
+</style>

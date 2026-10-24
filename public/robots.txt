@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://balance-yoga.odessa.ua/sitemap-index.xml

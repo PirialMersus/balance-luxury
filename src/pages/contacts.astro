@@ -1,0 +1,151 @@
+---
+import RootLayout from "../layouts/RootLayout.astro";
+import BookingSection from "../components/BookingSection.astro";
+import { brandConfiguration } from "../data/brand";
+---
+
+<RootLayout
+  pageTitle="Контакты и запись — Студия Balance Одесса"
+  pageDescription="Контакты студии горячей йоги Balance в Одессе. Запись на практики и согласование визитов через Instagram Direct @yoga_balance_odessa."
+  currentCanonicalPath="/contacts"
+>
+  <section class="luxury-section contacts-page-hero">
+    <div class="luxury-container">
+      <div class="contacts-hero-intro">
+        <span class="luxury-badge">Связь с пространством</span>
+        <h1 class="contacts-page-title">Контакты студии</h1>
+        <p class="contacts-page-lead">
+          Мы бережно относимся к приватности и камерности занятий. Запись, консультации и согласование персонального времени ведутся напрямую через официальный Instagram Direct.
+        </p>
+      </div>
+
+      <div class="contacts-information-grid">
+        <div class="luxury-card contact-channel-card">
+          <span class="contact-channel-badge">Главный канал связи</span>
+          <h2 class="contact-channel-title">Instagram Direct</h2>
+          <p class="contact-channel-description">
+            Самый быстрый способ забронировать коврик, узнать актуальное расписание на неделю или задать вопрос о первом визите.
+          </p>
+          <button
+            type="button"
+            class="luxury-button-primary contact-channel-button"
+            data-open-booking-modal
+          >
+            Забронировать коврик онлайн
+          </button>
+        </div>
+
+        <div class="luxury-card contact-channel-card">
+          <span class="contact-channel-badge">Локация студии</span>
+          <h2 class="contact-channel-title">{brandConfiguration.city}, Украина</h2>
+          <p class="contact-channel-description">
+            {brandConfiguration.locationDetails}
+          </p>
+          <div class="contact-location-meta">
+            <span class="location-status-indicator">&bull; Удобный доступ в центре города</span>
+            <span class="location-status-indicator">&bull; Камерный формат без случайных гостей</span>
+          </div>
+        </div>
+
+        <div class="luxury-card contact-channel-card">
+          <span class="contact-channel-badge">Основательница студии</span>
+          <h2 class="contact-channel-title">{brandConfiguration.founderName}</h2>
+          <p class="contact-channel-description">
+            Личный профиль Марии Мироновой. Вопросы индивидуального менторства, отстройки сложных асан и сотрудничества.
+          </p>
+          <a
+            href={brandConfiguration.founderInstagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="luxury-button-secondary contact-channel-button"
+          >
+            {brandConfiguration.founderInstagramHandle}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <BookingSection sectionHeadline="Оставить заявку на бронирование" />
+</RootLayout>
+
+<style>
+  .contacts-page-hero {
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .contacts-hero-intro {
+    max-width: var(--spacing-content-reading-width);
+    margin-bottom: clamp(3rem, 5vw, 4.5rem);
+  }
+
+  .contacts-page-title {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .contacts-page-lead {
+    font-size: clamp(1.125rem, 1.3vw, 1.3rem);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .contacts-information-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .contacts-information-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .contact-channel-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-background-surface);
+    padding: clamp(2rem, 3vw, 2.5rem);
+  }
+
+  .contact-channel-badge {
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-olive);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .contact-channel-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .contact-channel-description {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    flex: 1;
+  }
+
+  .contact-channel-button {
+    width: 100%;
+    margin-top: auto;
+  }
+
+  .contact-location-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+  }
+
+  .location-status-indicator {
+    display: block;
+  }
+</style>

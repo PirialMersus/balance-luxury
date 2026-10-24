@@ -1,0 +1,242 @@
+---
+import RootLayout from "../layouts/RootLayout.astro";
+import BookingSection from "../components/BookingSection.astro";
+import { studioPricingData } from "../data/pricing";
+---
+
+<RootLayout
+  pageTitle="Стоимость и абонементы — Balance Одесса"
+  pageDescription="Прозрачные форматы посещения горячей йоги в Одессе: первое ознакомительное занятие, абонементы и индивидуальные практики с Марией Мироновой."
+  currentCanonicalPath="/pricing"
+>
+  <section class="luxury-section pricing-page-hero">
+    <div class="luxury-container">
+      <div class="pricing-hero-intro">
+        <span class="luxury-badge">Форматы визитов</span>
+        <h1 class="pricing-page-title">{studioPricingData.sectionTitle}</h1>
+        <p class="pricing-page-lead">{studioPricingData.sectionSubtitle}</p>
+      </div>
+
+      <div class="pricing-cards-grid">
+        {studioPricingData.tiers.map((tierEntry) => (
+          <div class:list={["luxury-card pricing-tier-card", { "pricing-tier-card-featured": tierEntry.isFeatured }]}>
+            {tierEntry.badge && (
+              <span class="pricing-tier-badge">{tierEntry.badge}</span>
+            )}
+            <h2 class="pricing-tier-name">{tierEntry.name}</h2>
+            <div class="pricing-cost-row">
+              <span class="pricing-display-amount">{tierEntry.priceDisplay}</span>
+            </div>
+            <span class="pricing-duration-indicator">{tierEntry.durationOrVisits}</span>
+            <p class="pricing-note-paragraph">{tierEntry.priceNote}</p>
+
+            <hr class="pricing-card-divider" />
+
+            <ul class="pricing-features-list">
+              {tierEntry.features.map((featureItem) => (
+                <li class="pricing-feature-item">{featureItem}</li>
+              ))}
+            </ul>
+
+            <button
+              type="button"
+              class:list={["pricing-tier-action-button", tierEntry.isFeatured ? "luxury-button-primary" : "luxury-button-secondary"]}
+              data-open-booking-modal
+              data-booking-practice={tierEntry.id}
+            >
+              {tierEntry.ctaLabel}
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <div class="pricing-guidelines-box luxury-card">
+        <span class="luxury-badge">Сервис студии</span>
+        <h3 class="guidelines-box-title">{studioPricingData.guidelinesTitle}</h3>
+        <div class="guidelines-items-grid">
+          {studioPricingData.guidelines.map((guidelineItem) => (
+            <div class="guideline-card-item">
+              <span class="guideline-card-bullet">&bull;</span>
+              <p class="guideline-card-text">{guidelineItem}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <BookingSection sectionHeadline="Оформить абонемент или визит" />
+</RootLayout>
+
+<style>
+  .pricing-page-hero {
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .pricing-hero-intro {
+    max-width: var(--spacing-content-reading-width);
+    margin-bottom: clamp(3rem, 5vw, 4.5rem);
+  }
+
+  .pricing-page-title {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .pricing-page-lead {
+    font-size: clamp(1.125rem, 1.3vw, 1.3rem);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .pricing-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  @media (min-width: 768px) {
+    .pricing-cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .pricing-cards-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .pricing-tier-card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: var(--color-background-surface);
+  }
+
+  .pricing-tier-card-featured {
+    border-color: var(--color-accent-olive);
+    background-color: #FFFFFF;
+    box-shadow: 0 16px 32px rgba(66, 76, 59, 0.08);
+  }
+
+  .pricing-tier-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    background-color: rgba(66, 76, 59, 0.1);
+    color: var(--color-accent-olive);
+    padding: 0.25rem 0.65rem;
+    font-weight: 600;
+  }
+
+  .pricing-tier-name {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .pricing-cost-row {
+    margin-bottom: 0.25rem;
+  }
+
+  .pricing-display-amount {
+    font-family: var(--font-family-serif);
+    font-size: 1.75rem;
+    color: var(--color-text-primary);
+  }
+
+  .pricing-duration-indicator {
+    display: block;
+    font-size: 0.8125rem;
+    color: var(--color-accent-olive);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .pricing-note-paragraph {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    min-height: 40px;
+  }
+
+  .pricing-card-divider {
+    height: 1px;
+    background-color: var(--color-border-subtle);
+    border: none;
+    margin: 1.5rem 0;
+  }
+
+  .pricing-features-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+    flex: 1;
+  }
+
+  .pricing-feature-item {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    line-height: 1.5;
+  }
+
+  .pricing-feature-item::before {
+    content: "—";
+    color: var(--color-accent-olive);
+  }
+
+  .pricing-tier-action-button {
+    width: 100%;
+    margin-top: auto;
+  }
+
+  .pricing-guidelines-box {
+    padding: clamp(2rem, 4vw, 3.5rem);
+    background-color: var(--color-background-surface);
+  }
+
+  .guidelines-box-title {
+    font-size: 1.75rem;
+    margin-top: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .guidelines-items-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .guidelines-items-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .guideline-card-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .guideline-card-bullet {
+    color: var(--color-warm-amber);
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .guideline-card-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text-primary);
+  }
+</style>

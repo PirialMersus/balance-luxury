@@ -1,0 +1,94 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import BookingModal from "../components/BookingModal.astro";
+import { brandConfiguration } from "../data/brand";
+import "../styles/global.css";
+
+interface Props {
+  pageTitle?: string;
+  pageDescription?: string;
+  ogImage?: string;
+  currentCanonicalPath?: string;
+  schemaType?: "website" | "article" | "place";
+  articlePublishedTime?: string;
+  articleAuthor?: string;
+}
+
+const {
+  pageTitle = brandConfiguration.studioFullName,
+  pageDescription = brandConfiguration.studioDescription,
+  ogImage = "/images/hero-bg.webp",
+  currentCanonicalPath = Astro.url.pathname,
+  schemaType = "website",
+  articlePublishedTime,
+  articleAuthor
+} = Astro.props;
+
+const siteBaseUrl = Astro.site ? Astro.site.toString().replace(/\/$/, "") : "https://balance-yoga.odessa.ua";
+const absoluteCanonicalUrl = `${siteBaseUrl}${currentCanonicalPath}`;
+const absoluteOgImageUrl = ogImage.startsWith("http") ? ogImage : `${siteBaseUrl}${ogImage}`;
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "HealthAndBeautyBusiness",
+  "name": brandConfiguration.studioFullName,
+  "description": brandConfiguration.studioDescription,
+  "image": absoluteOgImageUrl,
+  "url": siteBaseUrl,
+  "sameAs": [
+    brandConfiguration.instagramUrl,
+    brandConfiguration.founderInstagramUrl
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": brandConfiguration.city,
+    "addressCountry": brandConfiguration.country
+  },
+  "priceRange": "$$"
+};
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={absoluteCanonicalUrl} />
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icon.jpg" />
+
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={absoluteCanonicalUrl} />
+    <meta property="og:image" content={absoluteOgImageUrl} />
+    <meta property="og:type" content={schemaType === "article" ? "article" : "website"} />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content={brandConfiguration.studioName} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={absoluteOgImageUrl} />
+
+    {schemaType === "article" && articlePublishedTime && (
+      <meta property="article:published_time" content={articlePublishedTime} />
+    )}
+    {schemaType === "article" && articleAuthor && (
+      <meta property="article:author" content={articleAuthor} />
+    )}
+
+    <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+  </head>
+  <body>
+    <Header currentPath={currentCanonicalPath} />
+    <main id="main-content-area">
+      <slot />
+    </main>
+    <Footer />
+    <BookingModal />
+  </body>
+</html>
